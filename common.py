@@ -36,6 +36,11 @@ def generate_wordcloud(analysis_text):
             word_freq = Counter(all_words)
         
         # 创建词云图
+        # 检查字体文件是否存在
+        import os
+        font_path = './app/static/Hiragino Sans GB.ttc'
+        if not os.path.exists(font_path):
+            st.warning(f'未找到字体文件: {font_path}，词云图可能无法正确显示中文')
         wc = WordCloud(
             width=1200,
             height=800,
