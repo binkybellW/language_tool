@@ -58,7 +58,7 @@ def generate_wordcloud(analysis_text):
                     st.write(f'📄 {item}')
             
             # 列出static目录下的文件
-            static_path = './app/static'
+            static_path = './static'
             static_files = os.listdir(static_path)
             st.write(f'\nstatic目录 ({static_path}) 下的文件:')
             for file in static_files:
