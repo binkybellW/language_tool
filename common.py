@@ -43,12 +43,29 @@ def generate_wordcloud(analysis_text):
             st.warning(f'未找到字体文件: {font_path}，词云图可能无法正确显示中文')
         # 列出./app/static目录下的所有文件
         try:
-            static_files = os.listdir('./app/static')
-            st.write('static目录下的文件:')
+            # 获取当前路径
+            current_path = os.getcwd()
+            st.write(f'当前路径: {current_path}')
+            
+            # 列出当前路径下的所有文件和文件夹
+            current_files = os.listdir(current_path)
+            st.write('当前目录下的文件和文件夹:')
+            for item in current_files:
+                # 判断是文件还是文件夹
+                if os.path.isdir(os.path.join(current_path, item)):
+                    st.write(f'📁 {item}')
+                else:
+                    st.write(f'📄 {item}')
+            
+            # 列出static目录下的文件
+            static_path = './app/static'
+            static_files = os.listdir(static_path)
+            st.write(f'\nstatic目录 ({static_path}) 下的文件:')
             for file in static_files:
-                st.write(f'- {file}')
+                st.write(f'📄 {file}')
+                
         except Exception as e:
-            st.error(f'无法读取static目录: {str(e)}')
+            st.error(f'无法读取目录: {str(e)}')
         wc = WordCloud(
             width=1200,
             height=800,
