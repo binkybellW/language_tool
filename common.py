@@ -41,6 +41,14 @@ def generate_wordcloud(analysis_text):
         font_path = './app/static/Hiragino Sans GB.ttc'
         if not os.path.exists(font_path):
             st.warning(f'未找到字体文件: {font_path}，词云图可能无法正确显示中文')
+        # 列出./app/static目录下的所有文件
+        try:
+            static_files = os.listdir('./app/static')
+            st.write('static目录下的文件:')
+            for file in static_files:
+                st.write(f'- {file}')
+        except Exception as e:
+            st.error(f'无法读取static目录: {str(e)}')
         wc = WordCloud(
             width=1200,
             height=800,
