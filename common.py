@@ -41,7 +41,7 @@ def generate_wordcloud(analysis_text):
             height=800,
             background_color='white',
             max_words=200,
-            font_path='/System/Library/Fonts/Hiragino Sans GB.ttc',  # 使用支持中英文的字体
+            font_path='./app/static/Hiragino Sans GB.ttc',  # 使用支持中英文的字体
             random_state=42
         ).generate_from_frequencies(word_freq)
         
