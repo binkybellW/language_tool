@@ -34,10 +34,7 @@ page = st.sidebar.radio(
 
 # 首页
 if page == '首页':
-    st.title('语言分析工具')
-    
-    # 添加首页图片
-    st.image('static/LPT.png', use_column_width=True)
+    st.title('语言分析工具 📚')
     
     st.write("""
     本工具提供以下功能：
