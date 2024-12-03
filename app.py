@@ -34,93 +34,15 @@ page = st.sidebar.radio(
 
 # 首页
 if page == '首页':
-    # 使用HTML和CSS美化标题
-    st.markdown("""
-        <h1 style='text-align: center; color: #2E4053; padding: 20px;'>
-            欢迎使用语言分析工具
-        </h1>
-        """, unsafe_allow_html=True)
+    st.title('语言分析工具')
+    st.write("""
+    本工具提供以下功能：
+    - B站弹幕分析：支持B站视频弹幕获取和分析，包含词频统计、情感分析、词云图等功能
+    - 语料清洗：提供文本预处理和分词功能
+    - 词频统计与词云图：对文本进行词频统计分析并生成词云图
     
-    # 添加简短介绍
-    st.markdown("""
-        <div style='text-align: center; padding: 10px; color: #566573;'>
-            一站式文本分析解决方案
-        </div>
-        """, unsafe_allow_html=True)
-    
-    # 使用列布局展示功能卡片，添加固定高度确保卡片大小一致
-    col1, col2, col3 = st.columns(3)
-    
-    card_style = """
-        <div style='
-            padding: 20px;
-            border-radius: 10px;
-            border: 1px solid #E8E8E8;
-            background-color: #F8F9F9;
-            height: 350px;
-            margin: 10px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            align-items: center;
-        '>
-    """
-    
-    with col1:
-        st.markdown(f"""
-            {card_style}
-                <h3 style='color: #2874A6; text-align: center;'>🎬 B站弹幕分析</h3>
-                <p style='text-align: center; color: #566573;'>
-                    支持B站视频弹幕获取和分析<br><br>
-                    • 词频统计<br>
-                    • 情感分析<br>
-                    • 词云图生成<br>
-                    • 时间分布分析
-                </p>
-            </div>
-        """, unsafe_allow_html=True)
-    
-    with col2:
-        st.markdown(f"""
-            {card_style}
-                <h3 style='color: #2874A6; text-align: center;'>🧹 语料清洗</h3>
-                <p style='text-align: center; color: #566573;'>
-                    文本预处理工具集<br><br>
-                    • 文本清洗<br>
-                    • 格式标准化<br>
-                    • 分词处理<br>
-                    • 批量导出
-                </p>
-            </div>
-        """, unsafe_allow_html=True)
-    
-    with col3:
-        st.markdown(f"""
-            {card_style}
-                <h3 style='color: #2874A6; text-align: center;'>📊 词频统计与词云图</h3>
-                <p style='text-align: center; color: #566573;'>
-                    文本可视化分析<br><br>
-                    • 词频统计<br>
-                    • 词云图生成<br>
-                    • 自定义停用词<br>
-                    • 导出分析结果
-                </p>
-            </div>
-        """, unsafe_allow_html=True)
-    
-    # 添加简洁的使用提示
-    st.markdown("<br>", unsafe_allow_html=True)
-    st.markdown("""
-        <div style='
-            text-align: center;
-            padding: 20px;
-            color: #808B96;
-            font-size: 14px;
-            margin-top: 20px;
-        '>
-            支持 TXT、CSV、XLSX 格式文件处理 | 建议文件大小 ≤ 10MB | 所有功能支持导出
-        </div>
-        """, unsafe_allow_html=True)
+    请使用左侧导航栏选择所需功能。
+    """)
     
     # 展示一些示例或使用说明
     with st.expander("使用说明"):
@@ -129,8 +51,6 @@ if page == '首页':
         2. 支持的文件格式：TXT, CSV, XLSX
         3. 建议单次处理文本大小不超过10MB
         """)
-        
-    st.markdown("[![Click me](./app/static/LPT.png)](https://streamlit.io)")
 
 
 # B站弹幕分析部分
