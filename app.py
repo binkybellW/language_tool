@@ -48,15 +48,29 @@ if page == '首页':
         </div>
         """, unsafe_allow_html=True)
     
-    # 使用列布局展示功能卡片
+    # 使用列布局展示功能卡片，添加固定高度确保卡片大小一致
     col1, col2, col3 = st.columns(3)
     
+    card_style = """
+        <div style='
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid #E8E8E8;
+            background-color: #F8F9F9;
+            height: 300px;
+            margin: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        '>
+    """
+    
     with col1:
-        st.markdown("""
-            <div style='padding: 20px; border-radius: 10px; border: 1px solid #E8E8E8; background-color: #F8F9F9;'>
+        st.markdown(f"""
+            {card_style}
                 <h3 style='color: #2874A6; text-align: center;'>🎬 B站弹幕分析</h3>
                 <p style='text-align: center; color: #566573;'>
-                    支持B站视频弹幕获取和分析<br>
+                    支持B站视频弹幕获取和分析<br><br>
                     • 词频统计<br>
                     • 情感分析<br>
                     • 词云图生成<br>
@@ -66,11 +80,11 @@ if page == '首页':
         """, unsafe_allow_html=True)
     
     with col2:
-        st.markdown("""
-            <div style='padding: 20px; border-radius: 10px; border: 1px solid #E8E8E8; background-color: #F8F9F9;'>
+        st.markdown(f"""
+            {card_style}
                 <h3 style='color: #2874A6; text-align: center;'>🧹 语料清洗</h3>
                 <p style='text-align: center; color: #566573;'>
-                    文本预处理工具集<br>
+                    文本预处理工具集<br><br>
                     • 文本清洗<br>
                     • 格式标准化<br>
                     • 分词处理<br>
@@ -80,11 +94,14 @@ if page == '首页':
         """, unsafe_allow_html=True)
     
     with col3:
-        st.markdown("""
-            <div style='padding: 20px; border-radius: 10px; border: 1px solid #E8E8E8; background-color: #F8F9F9;'>
+        st.markdown(f"""
+            {card_style}
                 <h3 style='color: #2874A6; text-align: center;'>📊 词频统计与词云图</h3>
                 <p style='text-align: center; color: #566573;'>
-                    对文本进行词频统计分析并生成词云图
+                    文本可视化分析<br><br>
+                    • 词频统计<br>
+                    • 词云图生成<br>
+                    • 时间分布分析
                 </p>
             </div>
         """, unsafe_allow_html=True)
@@ -428,8 +445,8 @@ elif page == '词频统计与词云图':
             
             with st.spinner('正在进行词频统计...'):
                 count_word_frequency(analysis_text)
-        if '字符统计' in analysis_type:
-            st.subheader('📝 ���符统计分析')
+        if '字符��计' in analysis_type:
+            st.subheader('📝 字符统计分析')
             with st.spinner('正在进行字符统计...'):
                 count_characters(analysis_text)
 
