@@ -37,13 +37,64 @@ if page == '首页':
     st.title('语言分析工具 📚')
     
     st.write("""
-    本工具提供以下功能：
-    - 🎬 B站弹幕分析：支持B站视频弹幕获取和分析，包含词频统计、情感分析、词云图等功能
-    - 🧹 语料清洗：提供文本预处理和分词功能
-    - 📊 词频统计与词云图：对文本进行词频统计分析并生成词云图
+    <div style='text-align: center; padding: 10px; color: #566573;'>
+        一站式文本分析解决方案
+    </div>
+    """, unsafe_allow_html=True)
     
-    请使用左侧导航栏选择所需功能。
-    """)
+    # 使用列布局展示功能卡片
+    col1, col2, col3 = st.columns(3)
+    
+    card_style = """
+        <div style='
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid #E8E8E8;
+            background-color: #F8F9F9;
+            height: 200px;
+            margin: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+        '>
+    """
+    
+    with col1:
+        st.markdown(f"""
+            {card_style}
+                <h3 style='color: #2874A6; text-align: center;'>🎬 B站弹幕分析</h3>
+                <p style='text-align: center; color: #566573;'>
+                    支持B站视频弹幕获取和分析<br>
+                    • 词频统计<br>
+                    • 情感分析<br>
+                    • 词云图生成
+                </p>
+            </div>
+        """, unsafe_allow_html=True)
+    
+    with col2:
+        st.markdown(f"""
+            {card_style}
+                <h3 style='color: #2874A6; text-align: center;'>🧹 语料清洗</h3>
+                <p style='text-align: center; color: #566573;'>
+                    文本预处理工具集<br>
+                    • 文本清洗<br>
+                    • 格式标准化<br>
+                    • 分词处理
+                </p>
+            </div>
+        """, unsafe_allow_html=True)
+    
+    with col3:
+        st.markdown(f"""
+            {card_style}
+                <h3 style='color: #2874A6; text-align: center;'>📊 词频统计与词云图</h3>
+                <p style='text-align: center; color: #566573;'>
+                    对文本进行词频统计分析并生成词云图
+                </p>
+            </div>
+        """, unsafe_allow_html=True)
     
     # 展示一些示例或使用说明
     with st.expander("💡 使用说明"):
