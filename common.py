@@ -10,11 +10,9 @@ import pandas as pd
 def generate_wordcloud(analysis_text):
     remove_stop_words = st.checkbox('去除停用词', value=False, key='remove_stop_words_checkbox')
     
-    # 默认的停用词
-    default_stop_words = "的,和,等,与,及,在,了,给,is,an,of,to,and,that,can,has,in,like"
     custom_stop_words = st.text_area(
         '自定义停用词（使用英文逗号 , 分隔，例如：的,和,etc,and）',
-        value=default_stop_words,
+        value='',
         help='请使用英文逗号(,)分隔每个停用词，支持中英文混合输入',
         key='custom_stop_words_textarea'
     )
@@ -174,3 +172,42 @@ def count_characters(analysis_text):
         file_name="text_statistics.csv",
         mime="text/csv"
     )
+
+def split_words(analysis_text):
+    st.subheader('分词结果')
+    
+    try:
+        # 将文本中的多个空格合并为单个空格
+        text = ' '.join(analysis_text.split())
+        
+        # 分别处理英文和中文
+        # 英文：按空格分词，保留标点
+        english_pattern = r'[A-Za-z]+(?:\'[A-Za-z]+)*|[.,!?;]'
+        english_words = re.findall(english_pattern, text)
+        
+        # 中文：使用jieba分词
+        chinese_text = ''.join(re.findall(r'[\u4e00-\u9fff]+', text))
+        chinese_words = jieba.lcut(chinese_text)
+        
+        # 合并结果
+        all_words = english_words + chinese_words
+        
+        # 显示分词结果
+        st.text_area(
+            '分词结果（词语间以空格分隔）：',
+            value=' '.join(all_words),
+            height=200,
+            key='split_words_result'
+        )
+        
+        # 提供下载选项
+        result_str = ' '.join(all_words)
+        st.download_button(
+            label="下载分词结果",
+            data=result_str.encode('utf-8'),
+            file_name="split_words_result.txt",
+            mime="text/plain"
+        )
+        
+    except Exception as e:
+        st.error(f"分词失败: {str(e)}")
