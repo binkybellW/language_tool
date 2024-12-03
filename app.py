@@ -1,4 +1,55 @@
-import streamlit as st
+# 首页
+if page == '首页':
+    st.title('语言分析工具 📚')
+    
+    st.write("""
+    本工具提供以下功能：
+    - 🎬 B站弹幕分析：支持B站视频弹幕获取和分析，包含词频统计、情感分析、词云图等功能
+    - 🧹 语料清洗：提供文本预处理和分词功能
+    - 📊 词频统计与词云图：对文本进行词频统计分析并生成词云图
+    
+    请使用左侧导航栏选择所需功能。
+    """)
+    
+    # 展示一些示例或使用说明
+    with st.expander("💡 使用说明"):
+        st.write("""
+        1. 所有功能都支持文件导入导出
+        2. 支持的文件格式：TXT, CSV, XLSX
+        3. 建议单次处理文本大小不超过10MB
+        """)
+    
+    # 添加首页图片，设置宽度为800像素
+    st.image('static/LPT.png', width=800)
+
+# B站弹幕分析部分
+elif page == 'B站弹幕分析':
+    st.title('B站弹幕分析 🎬')
+    
+    # 添加刷新按钮
+    refresh_button = st.button('刷新', type='primary')
+    if refresh_button:
+        st.session_state['video_url'] = ""
+    
+    # ... (其余代码保持不变)
+
+# 语料清洗部分
+elif page == '语料清洗':
+    st.title('语料清洗 🧹')
+    
+    if '示例文本' not in st.session_state:
+        st.session_state['示例文本'] = ""
+    
+    # ... (其余代码保持不变)
+
+# 词频统计与词云图部分
+elif page == '词频统计与词云图':
+    st.title('词频统计与词云图 📊')
+    
+    if '示例文本' not in st.session_state:
+        st.session_state['示例文本'] = ""
+    
+    # ... (其余代码保持不变)
 import pandas as pd
 import numpy as np
 import re
