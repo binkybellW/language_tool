@@ -399,25 +399,49 @@ elif page == '词频统计与词云图':
 elif page == '语料资源整合':
     st.title('语料资源整合 📚')
     
+    st.markdown("""
+    <div style='text-align: center; padding: 10px; color: #566573;'>
+        为语言研究提供丰富的语料来源
+    </div>
+    """, unsafe_allow_html=True)
+    
     # 分类展示
     categories = {
-        "社交媒体类": [
-            {"name": "Twitter API", "description": "推文文本、评论、转发、点赞数", "link": "Twitter Developer Platform"},
-            {"name": "Reddit API", "description": "主题帖、评论、投票数据", "link": "Reddit API"},
-            {"name": "Facebook Graph API", "description": "公共页面上的帖子和评论", "link": "Meta Graph API"}
+        "社交媒体语料": [
+            {
+                "name": "Twitter 数据集",
+                "type": "推文文本、评论、转发、点赞数",
+                "usage": "语言流行趋势、网络语体分析、情感变化研究",
+                "link": "https://developer.twitter.com/en/docs"
+            },
+            {
+                "name": "Reddit 讨论数据",
+                "type": "主题帖、评论、投票数据",
+                "usage": "社区讨论语言分析、用户互动语料研究",
+                "link": "https://www.reddit.com/dev/api/"
+            }
         ],
-        "产品评论类": [
-            {"name": "Yelp Fusion API", "description": "商家评论及评分", "link": "Yelp Fusion API"},
-            {"name": "Amazon Product Advertising API", "description": "商品评论、评分及关键词", "link": "Amazon Product Advertising API"},
-            {"name": "eBay API", "description": "买家评论和交易数据", "link": "eBay Developers Program"}
-        ],
-        # ... 其他类别
+        "学术文献语料": [
+            {
+                "name": "PubMed Central",
+                "type": "医学文献的标题、摘要、关键词",
+                "usage": "医学术语研究、学术写作分析",
+                "link": "https://www.ncbi.nlm.nih.gov/pmc/"
+            },
+            {
+                "name": "ACL Anthology",
+                "type": "学术论文的标题、摘要、关键词",
+                "usage": "语言学研究、学术写作分析",
+                "link": "https://www.aclweb.org/anthology/"
+            }
+        ]
     }
     
     for category, apis in categories.items():
         st.subheader(category)
         for api in apis:
             st.markdown(f"**{api['name']}**")
-            st.write(f"语料类型：{api['description']}")
+            st.write(f"语料类型：{api['type']}")
+            st.write(f"用途：{api['usage']}")
             st.write(f"[访问API]({api['link']})")
             st.markdown("---")
