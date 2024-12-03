@@ -29,7 +29,7 @@ st.set_page_config(
 st.sidebar.title('导航栏')
 page = st.sidebar.radio(
     '选择页面',
-    ['首页', 'B站弹幕分析', '语料清洗', '词频统计与词云图']
+    ['首页', 'B站弹幕分析', '语料清洗', '词频统计与词云图', '语料资源整合']
 )
 
 # 首页
@@ -394,3 +394,30 @@ elif page == '词频统计与词云图':
             st.subheader('☁️ 词云图生成')
             with st.spinner('正在生成词云图...'):
                 generate_wordcloud(analysis_text)
+
+# 语料资源整合部分
+elif page == '语料资源整合':
+    st.title('语料资源整合 📚')
+    
+    # 分类展示
+    categories = {
+        "社交媒体类": [
+            {"name": "Twitter API", "description": "推文文本、评论、转发、点赞数", "link": "Twitter Developer Platform"},
+            {"name": "Reddit API", "description": "主题帖、评论、投票数据", "link": "Reddit API"},
+            {"name": "Facebook Graph API", "description": "公共页面上的帖子和评论", "link": "Meta Graph API"}
+        ],
+        "产品评论类": [
+            {"name": "Yelp Fusion API", "description": "商家评论及评分", "link": "Yelp Fusion API"},
+            {"name": "Amazon Product Advertising API", "description": "商品评论、评分及关键词", "link": "Amazon Product Advertising API"},
+            {"name": "eBay API", "description": "买家评论和交易数据", "link": "eBay Developers Program"}
+        ],
+        # ... 其他类别
+    }
+    
+    for category, apis in categories.items():
+        st.subheader(category)
+        for api in apis:
+            st.markdown(f"**{api['name']}**")
+            st.write(f"语料类型：{api['description']}")
+            st.write(f"[访问API]({api['link']})")
+            st.markdown("---")
