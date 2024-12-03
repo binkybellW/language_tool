@@ -10,27 +10,28 @@ import pandas as pd
 def generate_wordcloud(analysis_text):
     remove_stop_words = st.checkbox('去除停用词', value=False, key='remove_stop_words_checkbox')
     
-    # 默认的英文停用词
-    default_english_stop_words = ['is', 'an', 'of', 'to', 'and', 'that', 'can', 'has', 'in', 'like']
-    # 默认的中文停用词
-    default_chinese_stop_words = ['的', '和', '等', '与', '及', '在', '了', '给']
-    
-    # 提供多选框供用户选择停用词
-    selected_english_stop_words = st.multiselect('选择英文停用词', default_english_stop_words, default=default_english_stop_words)
-    selected_chinese_stop_words = st.multiselect('选择中文停用词', default_chinese_stop_words, default=default_chinese_stop_words)
+    # 默认的停用词
+    default_stop_words = "的,和,等,与,及,在,了,给,is,an,of,to,and,that,can,has,in,like"
+    custom_stop_words = st.text_area(
+        '自定义停用词（使用英文逗号 , 分隔，例如：的,和,etc,and）',
+        value=default_stop_words,
+        help='请使用英文逗号(,)分隔每个停用词，支持中英文混合输入',
+        key='custom_stop_words_textarea'
+    )
     
     try:
         # 将文本中的多个空格合并为单个空格
         text = ' '.join(analysis_text.split())
         
         if remove_stop_words:
-            # 合并用户选择的停用词
-            english_stop_words = set(selected_english_stop_words)
-            english_words = [word for word in re.findall(r'[A-Za-z]+', text) if word.lower() not in english_stop_words]
+            # 处理停用词列表
+            stop_words = set(word.strip() for word in custom_stop_words.split(',') if word.strip())
             
-            chinese_stop_words = set(selected_chinese_stop_words)
+            # 分别处理英文和中文
+            english_words = [word for word in re.findall(r'[A-Za-z]+', text) if word.lower() not in stop_words]
+            
             chinese_text = ''.join(re.findall(r'[\u4e00-\u9fff]+', text))
-            chinese_words = [word for word in jieba.lcut(chinese_text) if word not in chinese_stop_words]
+            chinese_words = [word for word in jieba.lcut(chinese_text) if word not in stop_words]
             
             # 合并中英文词频统计
             all_words = english_words + chinese_words
