@@ -8,19 +8,30 @@ import io
 import pandas as pd
 
 def generate_wordcloud(analysis_text):
-    remove_stop_words = st.checkbox('去除连接词', value=False, key='remove_stop_words_checkbox')
+    remove_stop_words = st.checkbox('去除停用词', value=False, key='remove_stop_words_checkbox')
+    custom_stop_words = st.text_area('输入自定义停用词（用逗号分隔）', value='', key='custom_stop_words_textarea')
     
     try:
         # 将文本中的多个空格合并为单个空格
         text = ' '.join(analysis_text.split())
         
         if remove_stop_words:
-            # 英文分词并去除连接词
-            english_stop_words = {'is', 'an', 'of', 'to', 'and', 'that', 'can', 'has', 'in', 'like'}
+            # 默认的英文停用词
+            default_english_stop_words = {'is', 'an', 'of', 'to', 'and', 'that', 'can', 'has', 'in', 'like'}
+            # 用户自定义的停用词
+            custom_english_stop_words = set(custom_stop_words.lower().split(','))
+            # 合并停用词
+            english_stop_words = default_english_stop_words.union(custom_english_stop_words)
+            
             english_words = [word for word in re.findall(r'[A-Za-z]+', text) if word.lower() not in english_stop_words]
             
-            # 中文分词并去除连接词
-            chinese_stop_words = {'的', '和', '等', '与', '及', '在', '了', '给'}
+            # 默认的中文停用词
+            default_chinese_stop_words = {'的', '和', '等', '与', '及', '在', '了', '给'}
+            # 用户自定义的停用词
+            custom_chinese_stop_words = set(custom_stop_words.split(','))
+            # 合并停用词
+            chinese_stop_words = default_chinese_stop_words.union(custom_chinese_stop_words)
+            
             chinese_text = ''.join(re.findall(r'[\u4e00-\u9fff]+', text))
             chinese_words = [word for word in jieba.lcut(chinese_text) if word not in chinese_stop_words]
             
