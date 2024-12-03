@@ -58,7 +58,7 @@ def generate_wordcloud(analysis_text):
         #     current_files = os.listdir(current_path)
         #     st.write('当前目录下的文件和文件夹:')
         #     for item in current_files:
-        #         # 判断是文件还是文件夹
+        #         # 判断是文件还���文件夹
         #         if os.path.isdir(os.path.join(current_path, item)):
         #             st.write(f'📁 {item}')
         #         else:

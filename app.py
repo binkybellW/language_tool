@@ -13,7 +13,7 @@ import base64
 import tempfile
 import copy
 
-from common import generate_wordcloud,count_word_frequency,count_characters
+from common import generate_wordcloud,count_word_frequency,count_characters,split_words
 
 example_text="人工智能（Artificial Intelligence, AI）是计算机科学的一个分支，旨在创建能够像人类一样思考和学习的智能机器。AI技术包括机器学习（Machine Learning）、自然语言处理（Natural Language Processing）和计算机视觉（Computer Vision）等。随着科技的进步，AI在各个领域的应用越来越广泛，例如自动驾驶（Autonomous Driving）、医疗诊断（Medical Diagnosis）和智能客服（Intelligent Customer Service）等。AI的快速发展不仅改变了我们的生活方式，也引发了关于伦理和隐私的广泛讨论。未来，AI有望在教育、金融、制造业等更多领域发挥重要作用，推动社会的进一步发展。AI的潜力是无限的，它不仅可以提高生产效率，还可以通过分析大量数据来提供更好的决策支持。随着AI算法的不断优化和计算能力的提升，我们可以期待AI在解决复杂问题和创新方面带来更多突破。"
 
@@ -193,7 +193,7 @@ elif page == 'B站弹幕分析':
                                     for text in positive[:display_count]:
                                         st.text(text)
                                 with col2:
-                                    st.write('😐 中性弹幕:')
+                                    st.write('😐 中性弹���:')
                                     for text in neutral[:display_count]:
                                         st.text(text)
                                 with col3:
@@ -324,6 +324,11 @@ elif page == '语料清洗':
             st.subheader('清洗后的文本:')
             st.text_area('结果', st.session_state.cleaned_text, height=200)
             
+            # 添加分词功能
+            if st.button('进行分词'):
+                split_words(st.session_state.cleaned_text)
+            
+            # 保持现有的下载功能
             tet_res = st.session_state.cleaned_text.encode()
             st.download_button(
                 label="下载清洗后的文本", 
@@ -336,7 +341,7 @@ elif page == '语料清洗':
 else:
     st.title('语言分析')
     
-    if '示例文本' not in st.session_state:
+    if '示例���本' not in st.session_state:
         st.session_state['示例文本'] = ""
         
         # 添加刷新按钮
