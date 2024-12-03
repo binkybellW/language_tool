@@ -385,4 +385,12 @@ elif page == '词频统计与词云图':
             with st.spinner('正在进行词频统计...'):
                 count_word_frequency(analysis_text)
         if '字符计' in analysis_type:
-            
+            st.subheader('📝 字符统计分析')
+            with st.spinner('正在进行字符统计...'):
+                count_characters(analysis_text)
+
+        
+        if '词云图' in analysis_type:
+            st.subheader('☁️ 词云图生成')
+            with st.spinner('正在生成词云图...'):
+                generate_wordcloud(analysis_text)
