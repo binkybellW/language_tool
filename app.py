@@ -52,17 +52,19 @@ if page == '首页':
         2. 支持的文件格式：TXT, CSV, XLSX
         3. 建议单次处理文本大小不超过10MB
         """)
+    
+    # 添加首页图片，设置宽度为800像素
+    st.image('static/LPT.png', width=800)
 
 
 # B站弹幕分析部分
 elif page == 'B站弹幕分析':
-    st.title('B站弹幕分析')
+    st.title('B站弹幕分析 🎬')
     
     # 添加刷新按钮
     refresh_button = st.button('刷新', type='primary')
     if refresh_button:
         st.session_state['video_url'] = ""
-        # st.info('请输入要分析的B站视频URL')
     
     # 输入B站视频URL
     video_url = st.text_input('请输入B站视频URL:', key='video_url')
@@ -264,7 +266,7 @@ elif page == 'B站弹幕分析':
 
 # 语料清洗部分
 elif page == '语料清洗':
-    st.title('语料清洗')
+    st.title('语料清洗 🧹')
     
     if '示例文本' not in st.session_state:
         st.session_state['示例文本'] = ""
