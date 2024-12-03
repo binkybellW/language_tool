@@ -57,10 +57,11 @@ if page == '首页':
             border-radius: 10px;
             border: 1px solid #E8E8E8;
             background-color: #F8F9F9;
-            height: 300px;
+            height: 350px;
             margin: 10px;
             display: flex;
             flex-direction: column;
+            justify-content: space-between;
             align-items: center;
         '>
     """
@@ -101,9 +102,24 @@ if page == '首页':
                     文本可视化分析<br><br>
                     • 词频统计<br>
                     • 词云图生成<br>
-                    • 时间分布分析
+                    • 自定义停用词<br>
+                    • 导出分析结果
                 </p>
             </div>
+        """, unsafe_allow_html=True)
+    
+    # 添加简洁的使用提示
+    st.markdown("<br>", unsafe_allow_html=True)
+    st.markdown("""
+        <div style='
+            text-align: center;
+            padding: 20px;
+            color: #808B96;
+            font-size: 14px;
+            margin-top: 20px;
+        '>
+            支持 TXT、CSV、XLSX 格式文件处理 | 建议文件大小 ≤ 10MB | 所有功能支持导出
+        </div>
         """, unsafe_allow_html=True)
     
     # 展示一些示例或使用说明
@@ -445,7 +461,7 @@ elif page == '词频统计与词云图':
             
             with st.spinner('正在进行词频统计...'):
                 count_word_frequency(analysis_text)
-        if '字符��计' in analysis_type:
+        if '字符计' in analysis_type:
             st.subheader('📝 字符统计分析')
             with st.spinner('正在进行字符统计...'):
                 count_characters(analysis_text)
