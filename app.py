@@ -30,29 +30,34 @@ st.markdown("""
 <style>
     /* 侧边栏背景 */
     .sidebar .sidebar-content {
-        background-color: #ffffff;
+        background-color: #f7f9fc;
+        padding: 20px;
     }
     
     /* 导航按钮样式 */
     .stRadio > label {
-        padding: 10px 15px;
-        background-color: #f8f9fa;
-        border: 1px solid #e9ecef;
-        margin: 5px 0;
-        border-radius: 4px;
+        display: block;
+        padding: 12px 20px;
+        margin: 8px 0;
+        border-radius: 8px;
+        background-color: #ffffff;
+        border: 1px solid #d1d9e6;
+        color: #333;
+        font-weight: 500;
         cursor: pointer;
-        transition: all 0.2s;
+        transition: all 0.3s ease;
     }
     
     /* 导航按钮悬停效果 */
     .stRadio > label:hover {
-        background-color: #e9ecef;
-        border-color: #dee2e6;
+        background-color: #e3eaf5;
+        border-color: #b0c4de;
     }
     
     /* 选中状态样式 */
     .stRadio > div[role="radiogroup"] > div[data-testid="stMarkdownContainer"] > p {
-        font-weight: 500;
+        font-weight: 600;
+        color: #007bff;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -227,7 +232,7 @@ elif page == 'B站弹幕分析':
                             sentiment_df.columns = ['数量']
                             st.dataframe(sentiment_df)
 
-                            # 添加显示各类情感弹幕的选项
+                            # 添加显示各类情感��幕的选项
                             show_examples = st.checkbox('显示情感分类弹幕示例')
                             if show_examples:
                                 display_count = st.number_input('每类显示条数', min_value=1, value=5)
