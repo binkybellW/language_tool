@@ -25,12 +25,49 @@ st.set_page_config(
     layout="wide"
 )
 
+# 添加自定义CSS样式
+st.markdown("""
+<style>
+    .sidebar .sidebar-content {
+        background-image: linear-gradient(#f5f5f5,#e8e8e8);
+    }
+    .nav-link {
+        padding: 0.5rem 1rem;
+        margin: 0.2rem 0;
+        border-radius: 0.5rem;
+        background: white;
+        transition: all 0.3s;
+    }
+    .nav-link:hover {
+        background: #f0f2f6;
+        transform: translateX(5px);
+    }
+</style>
+""", unsafe_allow_html=True)
+
 # 导航栏
-st.sidebar.title('导航栏')
+st.sidebar.title('🧭 导航菜单')
+st.sidebar.markdown('---')
+
+# 使用自定义样式的导航按钮
+pages = {
+    '首页': '🏠',
+    'B站弹幕分析': '🎬',
+    '语料清洗': '🧹',
+    '词频统计与词云图': '📊'
+}
+
 page = st.sidebar.radio(
-    '选择页面',
-    ['首页', 'B站弹幕分析', '语料清洗', '词频统计与词云图']
+    '选择功能',
+    list(pages.keys()),
+    format_func=lambda x: f"{pages[x]} {x}"
 )
+
+# 添加页脚
+st.sidebar.markdown('---')
+st.sidebar.markdown('### 📌 关于')
+st.sidebar.markdown('语言分析工具 v1.0')
+st.sidebar.markdown('Made with ❤️ by Your')
 
 # 首页
 if page == '首页':
