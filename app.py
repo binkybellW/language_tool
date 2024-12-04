@@ -35,7 +35,7 @@ st.markdown("""
     }
     
     /* 导航按钮样式 */
-    .stRadio > label {
+    div.row-widget.stRadio > div[role="radiogroup"] > label {
         display: block;
         padding: 12px 20px;
         margin: 8px 0;
@@ -49,22 +49,28 @@ st.markdown("""
     }
     
     /* 导航按钮悬停效果 */
-    .stRadio > label:hover {
+    div.row-widget.stRadio > div[role="radiogroup"] > label:hover {
         background-color: #e3eaf5;
         border-color: #b0c4de;
+        transform: translateX(5px);
     }
     
     /* 选中状态样式 */
-    .stRadio > div[role="radiogroup"] > div[data-testid="stMarkdownContainer"] > p {
-        font-weight: 600;
-        color: #007bff;
+    div.row-widget.stRadio > div[role="radiogroup"] > label[data-baseweb="radio"] > div {
+        background-color: #007bff;
+        border-color: #007bff;
+    }
+    
+    /* 选中文本样式 */
+    div.row-widget.stRadio > div[role="radiogroup"] > label > div:last-child {
+        color: #333;
+        font-weight: 500;
         transition: all 0.3s ease;
     }
     
-    /* 文字悬停效果 */
-    .stRadio > div[role="radiogroup"] > div[data-testid="stMarkdownContainer"] > p:hover {
-        color: #0056b3;
-        transform: translateX(5px);
+    /* 文本悬停效果 */
+    div.row-widget.stRadio > div[role="radiogroup"] > label:hover > div:last-child {
+        color: #007bff;
     }
     
     /* 标题和其他文字的悬停效果 */
@@ -422,7 +428,7 @@ elif page == '词频统计与词云图':
         analysis_text = st.session_state['示例文本']
     
     if st.session_state['示例文本']:
-        st.write('生成的示例文���:')
+        st.write('生成的示例文本:')
         st.text_area('示例文本', st.session_state['示例文本'], height=200)
         analysis_text = st.session_state['示例文本']
     else:
