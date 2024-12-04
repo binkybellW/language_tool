@@ -58,6 +58,22 @@ st.markdown("""
     .stRadio > div[role="radiogroup"] > div[data-testid="stMarkdownContainer"] > p {
         font-weight: 600;
         color: #007bff;
+        transition: all 0.3s ease;
+    }
+    
+    /* 文字悬停效果 */
+    .stRadio > div[role="radiogroup"] > div[data-testid="stMarkdownContainer"] > p:hover {
+        color: #0056b3;
+        transform: translateX(5px);
+    }
+    
+    /* 标题和其他文字的悬停效果 */
+    .sidebar .sidebar-content h1:hover,
+    .sidebar .sidebar-content h2:hover,
+    .sidebar .sidebar-content h3:hover,
+    .sidebar .sidebar-content p:hover {
+        color: #007bff;
+        transition: all 0.3s ease;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -232,7 +248,7 @@ elif page == 'B站弹幕分析':
                             sentiment_df.columns = ['数量']
                             st.dataframe(sentiment_df)
 
-                            # 添加显示各类情感��幕的选项
+                            # 添加显示各类情感幕的选项
                             show_examples = st.checkbox('显示情感分类弹幕示例')
                             if show_examples:
                                 display_count = st.number_input('每类显示条数', min_value=1, value=5)
@@ -406,7 +422,7 @@ elif page == '词频统计与词云图':
         analysis_text = st.session_state['示例文本']
     
     if st.session_state['示例文本']:
-        st.write('生成的示例文本:')
+        st.write('生成的示例文���:')
         st.text_area('示例文本', st.session_state['示例文本'], height=200)
         analysis_text = st.session_state['示例文本']
     else:
