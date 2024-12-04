@@ -30,8 +30,9 @@ st.markdown("""
 <style>
     /* 侧边栏背景 */
     .sidebar .sidebar-content {
-        background-color: #f7f9fc;
+        background-color: rgba(255, 192, 192, 0.1);  /* 非常淡的透明红色 */
         padding: 20px;
+        backdrop-filter: blur(5px);  /* 添加模糊效果 */
     }
     
     /* 导航按钮样式 */
@@ -40,8 +41,8 @@ st.markdown("""
         padding: 12px 20px;
         margin: 8px 0;
         border-radius: 8px;
-        background-color: #ffffff;
-        border: 1px solid #d1d9e6;
+        background-color: rgba(255, 255, 255, 0.8);  /* 半透明白色背景 */
+        border: 1px solid rgba(255, 192, 192, 0.3);  /* 淡红色边框 */
         color: #333;
         font-weight: 500;
         cursor: pointer;
@@ -50,15 +51,15 @@ st.markdown("""
     
     /* 导航按钮悬停效果 */
     div.row-widget.stRadio > div[role="radiogroup"] > label:hover {
-        background-color: #e3eaf5;
-        border-color: #b0c4de;
+        background-color: rgba(255, 228, 228, 0.5);  /* 淡红色悬停背景 */
+        border-color: rgba(255, 192, 192, 0.5);
         transform: translateX(5px);
     }
     
     /* 选中状态样式 */
     div.row-widget.stRadio > div[role="radiogroup"] > label[data-baseweb="radio"] > div {
-        background-color: #007bff;
-        border-color: #007bff;
+        background-color: rgba(255, 128, 128, 0.8);  /* 选中状态的红色 */
+        border-color: rgba(255, 128, 128, 0.8);
     }
     
     /* 选中文本样式 */
@@ -70,7 +71,7 @@ st.markdown("""
     
     /* 文本悬停效果 */
     div.row-widget.stRadio > div[role="radiogroup"] > label:hover > div:last-child {
-        color: #007bff;
+        color: rgba(255, 64, 64, 0.8);  /* 文字悬停时的红色 */
     }
     
     /* 标题和其他文字的悬停效果 */
@@ -78,7 +79,7 @@ st.markdown("""
     .sidebar .sidebar-content h2:hover,
     .sidebar .sidebar-content h3:hover,
     .sidebar .sidebar-content p:hover {
-        color: #007bff;
+        color: rgba(255, 64, 64, 0.8);
         transition: all 0.3s ease;
     }
 </style>
@@ -100,7 +101,7 @@ page = st.sidebar.radio(
 st.sidebar.markdown('---')
 st.sidebar.markdown('### 关于')
 st.sidebar.markdown('语言分析工具 v1.0')
-st.sidebar.markdown('Made with ❤️ by Your Name')
+st.sidebar.markdown('Made with ❤️ by Shan')
 
 # 首页
 if page == '首页':
@@ -254,7 +255,7 @@ elif page == 'B站弹幕分析':
                             sentiment_df.columns = ['数量']
                             st.dataframe(sentiment_df)
 
-                            # 添加显示各类情感幕的选项
+                            # 添��显示各类情感幕的选项
                             show_examples = st.checkbox('显示情感分类弹幕示例')
                             if show_examples:
                                 display_count = st.number_input('每类显示条数', min_value=1, value=5)
