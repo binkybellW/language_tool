@@ -58,7 +58,7 @@ def generate_wordcloud(analysis_text):
         #     current_files = os.listdir(current_path)
         #     st.write('当前目录下的文件和文件夹:')
         #     for item in current_files:
-        #         # 判断是文件还���文件夹
+        #         # 判断是文件还文件夹
         #         if os.path.isdir(os.path.join(current_path, item)):
         #             st.write(f'📁 {item}')
         #         else:
@@ -113,7 +113,7 @@ def count_word_frequency(analysis_text):
     with col1:
         remove_punctuation = st.checkbox('去除标点符号')
     with col2:
-        remove_stopwords = st.checkbox('去除连接词')
+        remove_stopwords = st.checkbox('去除停用词')
     with col3:
         remove_numbers = st.checkbox('去除数字')
     with col4:
@@ -124,7 +124,13 @@ def count_word_frequency(analysis_text):
         words = [w for w in words if not re.match(r'[^\w]', w)]
         
     if remove_stopwords:
-        stopwords = ['的','了','和','是','在','我','有','就','不','都','而','及','与','着','或']
+        stopwords = ['我', '你', '他', '她', '它', '我们', '你们', '他们', '她们', '它们', 
+                     '的', '了', '和', '在', '是', '不', '也', '有', '对', '到', '说', 
+                     '看', '很', '都', '这', '那', '什么', '就', '人', '因为', '怎么', 
+                     '一个', '而', '但', '会', '能', '让', '如果', '又', '用', '自己', 
+                     '多', '没', '为', '去', '然后', '这样', '那样', '真的', '所以', 
+                     '其实', '并', '吧', '吗', '呢', '就是', '而且', '或者', '可以', 
+                     '可能', '像', '要', '比如', '从', '更', '这儿', '那儿', '那么', '如此']
         words = [w for w in words if w not in stopwords]
 
     if remove_numbers:
