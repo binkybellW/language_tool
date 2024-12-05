@@ -151,7 +151,8 @@ def count_word_frequency(analysis_text):
     freq_df = freq_df.head(top_n)
     
     st.write('词频统计结果:')
-    st.dataframe(freq_df)
+    # 设置表格样式
+    st.dataframe(freq_df.style.set_properties(**{'width': '300px', 'text-align': 'center'}))
     
     # 导出词频统计结果
     csv = freq_df.to_csv(encoding='utf-8-sig').encode('utf-8-sig')
@@ -202,7 +203,7 @@ def split_words(analysis_text):
         chinese_text = ''.join(re.findall(r'[\u4e00-\u9fff]+', text))
         chinese_words = jieba.lcut(chinese_text)
         
-        # 合并���果
+        # 合并果
         all_words = english_words + chinese_words
         
         # 显示分词结果
