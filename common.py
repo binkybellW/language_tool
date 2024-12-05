@@ -22,8 +22,15 @@ def generate_wordcloud(analysis_text):
         text = ' '.join(analysis_text.split())
         
         if remove_stop_words:
-            # 处理停用词列表
+            # 更新停用词列表
             stop_words = set(word.strip() for word in custom_stop_words.split(',') if word.strip())
+            stop_words.update(['我', '你', '他', '她', '它', '我们', '你们', '他们', '她们', '它们', 
+                               '的', '了', '和', '在', '是', '不', '也', '有', '对', '到', '说', 
+                               '看', '很', '都', '这', '那', '什么', '就', '人', '因为', '怎么', 
+                               '一个', '而', '但', '会', '能', '让', '如果', '又', '用', '自己', 
+                               '多', '没', '为', '去', '然后', '这样', '那样', '真的', '所以', 
+                               '其实', '并', '吧', '吗', '呢', '就是', '而且', '或者', '可以', 
+                               '可能', '像', '要', '比如', '从', '更', '这儿', '那儿', '那么', '如此'])
             
             # 分别处理英文和中文
             english_words = [word for word in re.findall(r'[A-Za-z]+', text) if word.lower() not in stop_words]
@@ -195,7 +202,7 @@ def split_words(analysis_text):
         chinese_text = ''.join(re.findall(r'[\u4e00-\u9fff]+', text))
         chinese_words = jieba.lcut(chinese_text)
         
-        # 合并结果
+        # 合并���果
         all_words = english_words + chinese_words
         
         # 显示分词结果
