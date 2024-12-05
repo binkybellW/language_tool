@@ -50,36 +50,6 @@ def generate_wordcloud(analysis_text):
             word_freq = Counter(all_words)
         
         # 创建词云图
-        # 检查字体文件是否存在
-        # import os
-        # font_path = './static/Hiragino Sans GB.ttc'
-        # if not os.path.exists(font_path):
-        #     st.warning(f'未找到字体文件: {font_path}，词云图可能无法正确显示中文')
-        # # 列出./app/static目录下的所有文件
-        # try:
-        #     # 获取当前路径
-        #     current_path = os.getcwd()
-        #     st.write(f'当前路径: {current_path}')
-            
-        #     # 列出当前路径下的所有文件和文件夹
-        #     current_files = os.listdir(current_path)
-        #     st.write('当前目录下的文件和文件夹:')
-        #     for item in current_files:
-        #         # 判断是文件还文件夹
-        #         if os.path.isdir(os.path.join(current_path, item)):
-        #             st.write(f'📁 {item}')
-        #         else:
-        #             st.write(f'📄 {item}')
-            
-        #     # 列出static目录下的文件
-        #     static_path = './static'
-        #     static_files = os.listdir(static_path)
-        #     st.write(f'\nstatic目录 ({static_path}) 下的文件:')
-        #     for file in static_files:
-        #         st.write(f'📄 {file}')
-                
-        # except Exception as e:
-        #     st.error(f'无法读取目录: {str(e)}')
         wc = WordCloud(
             width=1200,
             height=800,
@@ -113,8 +83,6 @@ def generate_wordcloud(analysis_text):
     except Exception as e:
         st.error(f"生成词云图失败: {str(e)}")
         
-        
-        
 def count_word_frequency(analysis_text):
     col1, col2, col3, col4 = st.columns(4)
     with col1:
@@ -139,7 +107,7 @@ def count_word_frequency(analysis_text):
                      '其实', '并', '吧', '吗', '呢', '就是', '而且', '或者', '可以', 
                      '可能', '像', '要', '比如', '从', '更', '这儿', '那儿', '那么', '如此']
         words = [w for w in words if w not in stopwords]
-
+    
     if remove_numbers:
         words = [w for w in words if not w.isdigit()]
     
@@ -151,19 +119,7 @@ def count_word_frequency(analysis_text):
     freq_df = freq_df.head(top_n)
     
     st.write('词频统计结果:')
-    # 调整表格样式
-    styled_df = freq_df.style.set_properties(**{
-        'text-align': 'center',
-        'border': '1px solid black',
-        'background-color': '#f9f9f9'
-    }).set_table_styles({
-        'header': {
-            'selector': 'th',
-            'props': [('background-color', '#f0f0f0')]
-        }
-    })
-    
-    st.dataframe(styled_df, width=800)
+    st.dataframe(freq_df)
     
     # 导出词频统计结果
     csv = freq_df.to_csv(encoding='utf-8-sig').encode('utf-8-sig')
@@ -206,7 +162,7 @@ def split_words(analysis_text):
         text = ' '.join(analysis_text.split())
         
         # 分别处理英文和中文
-        # 英文：按空格词，保留标点
+        # 英文：按空格分词，保留标点
         english_pattern = r'[A-Za-z]+(?:\'[A-Za-z]+)*|[.,!?;]'
         english_words = re.findall(english_pattern, text)
         
@@ -214,7 +170,7 @@ def split_words(analysis_text):
         chinese_text = ''.join(re.findall(r'[\u4e00-\u9fff]+', text))
         chinese_words = jieba.lcut(chinese_text)
         
-        # 合并果
+        # 合并结果
         all_words = english_words + chinese_words
         
         # 显示分词结果
@@ -236,22 +192,3 @@ def split_words(analysis_text):
         
     except Exception as e:
         st.error(f"分词失败: {str(e)}")
-
-def display_danmu(danmu_list):
-    if not danmu_list:
-        st.warning('未获取到任何弹幕数据')
-        return
-        
-    # 直接显示弹幕内容
-    st.subheader('弹幕内容')
-    danmu_df = pd.DataFrame(danmu_list, columns=['弹幕内容'])
-    st.dataframe(danmu_df, width=800)  # 设置更大的宽度
-    
-    # 提供下载选项
-    csv = danmu_df.to_csv(index=False).encode('utf-8-sig')
-    st.download_button(
-        label="下载弹幕数据",
-        data=csv,
-        file_name='danmu_data.csv',
-        mime='text/csv',
-    )
