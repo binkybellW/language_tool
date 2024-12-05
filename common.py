@@ -151,13 +151,19 @@ def count_word_frequency(analysis_text):
     freq_df = freq_df.head(top_n)
     
     st.write('词频统计结果:')
-    # 调整表格样式，增加宽度
-    st.dataframe(
-        freq_df.style.set_properties(**{
-            'text-align': 'center'
-        }),
-        width=800  # 显著增加表格宽度
-    )
+    # 调整表格样式
+    styled_df = freq_df.style.set_properties(**{
+        'text-align': 'center',
+        'border': '1px solid black',
+        'background-color': '#f9f9f9'
+    }).set_table_styles({
+        'header': {
+            'selector': 'th',
+            'props': [('background-color', '#f0f0f0')]
+        }
+    })
+    
+    st.dataframe(styled_df, width=800)
     
     # 导出词频统计结果
     csv = freq_df.to_csv(encoding='utf-8-sig').encode('utf-8-sig')
@@ -200,7 +206,7 @@ def split_words(analysis_text):
         text = ' '.join(analysis_text.split())
         
         # 分别处理英文和中文
-        # 英文：按空格分词，保留标点
+        # 英文：按空格词，保留标点
         english_pattern = r'[A-Za-z]+(?:\'[A-Za-z]+)*|[.,!?;]'
         english_words = re.findall(english_pattern, text)
         
@@ -236,7 +242,7 @@ def display_danmu(danmu_list):
         st.warning('未获取到任何弹幕数据')
         return
         
-    # 直接显示弹幕内容，不使用expander
+    # 直接显示弹幕内容
     st.subheader('弹幕内容')
     danmu_df = pd.DataFrame(danmu_list, columns=['弹幕内容'])
     st.dataframe(danmu_df, width=800)  # 设置更大的宽度
