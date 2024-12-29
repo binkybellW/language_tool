@@ -285,7 +285,16 @@ if page == '首页':
         </div>
         """, unsafe_allow_html=True)
 
-    # 添加图片 - 直接使用容器宽度
+    # 添加图片 - 控制最大高度
+    st.markdown("""
+        <style>
+            [data-testid="stImage"] img {
+                max-height: 300px;  /* 控制图片最大高度 */
+                width: auto;
+                object-fit: contain;
+            }
+        </style>
+    """, unsafe_allow_html=True)
     st.image('static/LPT.png', use_container_width=True)
     
     # 页脚信息
