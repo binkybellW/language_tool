@@ -206,7 +206,7 @@ if page == '首页':
     st.markdown("""
     <div style="text-align: center;">
         <div class="intro-text">
-            集成了多种语言分析工具，助您更好地分析和理解文本数据。
+            集成了多种语言分析工具，助您更好地分析和理解文本数据
         </div>
     </div>
     """, unsafe_allow_html=True)
@@ -274,17 +274,23 @@ if page == '首页':
 
     # 使用说明
     st.markdown("""
-    <div class="usage-guide">
-        <h3>💡 使用说明</h3>
-        <ol>
+    <div style="margin-top: 2em; padding: 25px; border-radius: 15px; background-color: #f8f9fa;">
+        <h3 style="color: #155799; margin-bottom: 15px;">💡 使用说明</h3>
+        <ol style="font-size: 1.1em; line-height: 1.6; color: #444;">
             <li>从左侧菜单选择需要使用的功能</li>
             <li>按照界面提示输入或上传文本数据</li>
             <li>设置相应的分析参数</li>
             <li>查看分析结果并下载</li>
         </ol>
     </div>
+    """, unsafe_allow_html=True)
+
+    # 添加图片
+    st.image('static/LPT.png', use_column_width=True)
     
-    <div class="footer">
+    # 页脚信息
+    st.markdown("""
+    <div style="margin-top: 2em; text-align: center; color: #666;">
         <p>如有问题或建议，欢迎反馈</p>
         <p>Version 1.0.0</p>
     </div>
