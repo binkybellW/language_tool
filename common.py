@@ -564,7 +564,7 @@ def text_annotation(text):
                         data=csv_labeled,
                         file_name="annotations_labeled.csv",
                         mime="text/csv",
-                        help="只包含已标注的词语（不包含"无标注"的词）"
+                        help="只包含已标注的词语（不包含"无标注"的词）",
                     )
             
             # 显示标注统计信息
