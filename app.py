@@ -108,43 +108,43 @@ if page == '首页':
     st.markdown("""
     <style>
     .big-font {
-        font-size: 3.2em !important;
+        font-size: 2.8em !important;
         font-weight: bold;
         background: linear-gradient(120deg, #155799, #159957);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         text-align: center;
-        margin-bottom: 1em;
-        padding: 20px;
+        margin-bottom: 0.5em;
+        padding: 10px;
     }
     .feature-card {
-        padding: 25px;
-        border-radius: 15px;
+        padding: 20px;
+        border-radius: 12px;
         background-color: #ffffff;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        margin-bottom: 25px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        margin-bottom: 15px;
         transition: all 0.3s ease;
         text-align: center;
     }
     .feature-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        transform: translateY(-3px);
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
     }
     .feature-icon {
-        font-size: 2.5em;
-        margin-bottom: 15px;
+        font-size: 2em;
+        margin-bottom: 10px;
         color: #159957;
     }
     .feature-title {
-        font-size: 1.4em;
+        font-size: 1.3em;
         font-weight: bold;
         color: #155799;
-        margin-bottom: 15px;
+        margin-bottom: 10px;
     }
     .feature-description {
         color: #444;
-        font-size: 1.1em;
-        line-height: 1.6;
+        font-size: 1.05em;
+        line-height: 1.4;
         text-align: center;
     }
     .feature-description ul {
@@ -153,29 +153,47 @@ if page == '首页':
         margin: 0;
     }
     .feature-description li {
-        margin: 10px 0;
-        padding: 5px;
+        margin: 6px 0;
+        padding: 3px;
+    }
+    .intro-text {
+        text-align: center;
+        margin-bottom: 1.5em;
+        font-size: 1.1em;
+        color: #444;
+    }
+    .usage-guide {
+        margin-top: 1.5em;
+        padding: 20px;
+        border-radius: 12px;
+        background-color: #f8f9fa;
+    }
+    .usage-guide h3 {
+        color: #155799;
+        margin-bottom: 10px;
+    }
+    .usage-guide ol {
+        font-size: 1em;
+        line-height: 1.4;
+        color: #444;
+        margin: 0;
+        padding-left: 20px;
+    }
+    .footer {
+        margin-top: 1.5em;
+        text-align: center;
+        color: #666;
+        font-size: 0.9em;
     }
     </style>
-    """, unsafe_allow_html=True)
-
-    # 添加背景图片
-    st.markdown("""
-    <div style="text-align: center; margin-bottom: 2em;">
-        <img src="https://raw.githubusercontent.com/your_username/your_repo/main/background.jpg" 
-             style="max-width: 100%; height: auto; border-radius: 10px; margin-bottom: 20px;">
-    </div>
     """, unsafe_allow_html=True)
 
     # 标题
     st.markdown('<p class="big-font">🎯 语言分析工具集</p>', unsafe_allow_html=True)
 
     # 简介
-    st.markdown("""
-    <div style="text-align: center; margin-bottom: 2em; font-size: 1.2em; color: #444;">
-        这是一个集成了多种语言分析功能的工具集，帮助您更好地分析和理解文本数据。
-    </div>
-    """, unsafe_allow_html=True)
+    st.markdown('<div class="intro-text">这是一个集成了多种语言分析功能的工具集，帮助您更好地分析和理解文本数据。</div>', 
+                unsafe_allow_html=True)
 
     # 功能卡片
     col1, col2 = st.columns(2)
@@ -240,9 +258,9 @@ if page == '首页':
 
     # 使用说明
     st.markdown("""
-    <div style="margin-top: 2em; padding: 25px; border-radius: 15px; background-color: #f8f9fa;">
-        <h3 style="color: #155799; margin-bottom: 15px;">💡 使用说明</h3>
-        <ol style="font-size: 1.1em; line-height: 1.6; color: #444;">
+    <div class="usage-guide">
+        <h3>💡 使用说明</h3>
+        <ol>
             <li>从左侧菜单选择需要使用的功能</li>
             <li>按照界面提示输入或上传文本数据</li>
             <li>设置相应的分析参数</li>
@@ -250,7 +268,7 @@ if page == '首页':
         </ol>
     </div>
     
-    <div style="margin-top: 2em; text-align: center; color: #666;">
+    <div class="footer">
         <p>如有问题或建议，欢迎反馈</p>
         <p>Version 1.0.0</p>
     </div>
