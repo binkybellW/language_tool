@@ -533,25 +533,46 @@ def text_annotation(text):
                     'category': category
                 }
     
-    # 下载按钮放在最外层
+    # 在最外层添加下载功能
     if st.session_state.annotations:  # 如果有标注数据
-        results = []
+        # 准备数据
+        labeled_results = []
+        all_results = []
+        
         for sent_id, annotations in st.session_state.annotations.items():
             for word, label in annotations:
+                result = {
+                    'sentence_id': sent_id + 1,
+                    'word': word,
+                    'label': label
+                }
+                all_results.append(result)
                 if label != "无标注":
-                    results.append({
-                        'sentence_id': sent_id + 1,
-                        'word': word,
-                        'label': label
-                    })
+                    labeled_results.append(result)
         
-        if results:  # 如果有已标注的数据
-            df = pd.DataFrame(results)
+        # 选择下载数据类型
+        download_type = st.radio(
+            "选择要下载的数据：",
+            ["已标注数据", "全部数据"],
+            key="download_type"
+        )
+        
+        if download_type == "已标注数据" and labeled_results:
+            df = pd.DataFrame(labeled_results)
             csv = df.to_csv(index=False).encode('utf-8-sig')
             st.download_button(
-                label="下载标注数据",
+                label="下载数据",
                 data=csv,
-                file_name="annotations.csv",
+                file_name="labeled_annotations.csv",
+                mime="text/csv"
+            )
+        elif download_type == "全部数据" and all_results:
+            df = pd.DataFrame(all_results)
+            csv = df.to_csv(index=False).encode('utf-8-sig')
+            st.download_button(
+                label="下载数据",
+                data=csv,
+                file_name="all_annotations.csv",
                 mime="text/csv"
             )
 
