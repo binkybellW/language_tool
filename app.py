@@ -297,10 +297,10 @@ if page == '首页':
         </style>
     """, unsafe_allow_html=True)
     img = Image.open('static/LPT.png')
-    # 调整为横版，例如 1200x300
+    # 调整为横版，增加高度以保持质量
     new_width = 1200
-    new_height = 300
-    resized_img = img.resize((new_width, new_height))
+    new_height = 500  # 增加高度
+    resized_img = img.resize((new_width, new_height), Image.Resampling.LANCZOS)  # 使用LANCZOS重采样以提高质量
     
     # 转换为numpy数组并显示
     img_array = np.array(resized_img)
