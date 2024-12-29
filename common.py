@@ -402,19 +402,32 @@ def text_annotation(text):
             with col1:
                 st.write(f"句子 {i+1}: {sentence}")
             with col2:
-                # 改进的分词处理
-                # 先处理英文词组
-                processed_sentence = re.sub(r'([a-zA-Z])([A-Z])', r'\1 \2', sentence)  # 处理驼峰命名
-                processed_sentence = re.sub(r'([a-zA-Z])(\d)', r'\1 \2', processed_sentence)  # 处理字母和数字
-                processed_sentence = re.sub(r'(\d)([a-zA-Z])', r'\1 \2', processed_sentence)  # 处理数字和字母
+                # 改进的英文分词处理
+                def split_english_words(text):
+                    # 处理驼峰命名
+                    text = re.sub(r'([a-z])([A-Z])', r'\1 \2', text)
+                    # 处理连续的大写字母（如AI、GPU）
+                    text = re.sub(r'([A-Z])([A-Z][a-z])', r'\1 \2', text)
+                    # 处理数字和字母的组合
+                    text = re.sub(r'([a-zA-Z])(\d)', r'\1 \2', text)
+                    text = re.sub(r'(\d)([a-zA-Z])', r'\1 \2', text)
+                    return text
+
+                # 先处理英文
+                processed_sentence = split_english_words(sentence)
                 
                 # 分词处理
                 words = []
-                for segment in processed_sentence.split():
-                    if re.match(r'^[a-zA-Z]+$', segment):  # 如果是纯英文单词
-                        words.append(segment)
-                    else:  # 对非英文部分使用jieba分词
-                        words.extend(jieba.lcut(segment))
+                # 使用正则表达式找出所有英文单词和其他字符
+                pattern = r'[A-Za-z]+|[\u4e00-\u9fff]+'
+                matches = re.finditer(pattern, processed_sentence)
+                
+                for match in matches:
+                    word = match.group()
+                    if re.match(r'^[A-Za-z]+$', word):  # 英文单词
+                        words.append(word)
+                    else:  # 中文字符
+                        words.extend(jieba.lcut(word))
                 
                 # 标注处理
                 annotations = []
