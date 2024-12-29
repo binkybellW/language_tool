@@ -108,7 +108,7 @@ if page == '首页':
     st.markdown("""
     <style>
     .stApp {
-        background-color: #f5f7f9;
+        background-color: #ffffff;  /* 改为白色背景 */
     }
     .big-font {
         font-size: 2.8em !important;
@@ -119,11 +119,11 @@ if page == '首页':
         padding: 5px;
     }
     .feature-card {
-        padding: 12px 10px;  /* 减小内边距 */
+        padding: 15px;  /* 增加内边距 */
         border-radius: 12px;
-        background-color: #ffffff;
+        background-color: #f8f9fa;  /* 浅灰色卡片背景 */
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        margin-bottom: 12px;  /* 减小卡片间距 */
+        margin-bottom: 15px;  /* 增加卡片间距 */
         transition: all 0.3s ease;
         text-align: center;
     }
@@ -132,20 +132,20 @@ if page == '首页':
         box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
     }
     .feature-icon {
-        font-size: 1.8em;  /* 稍微减小图标 */
-        margin-bottom: 3px;  /* 减小图标下方间距 */
+        font-size: 2em;  /* 增大图标 */
+        margin-bottom: 5px;  /* 增加间距 */
         color: #333333;
     }
     .feature-title {
-        font-size: 1.2em;  /* 稍微减小标题 */
+        font-size: 1.25em;  /* 增大标题 */
         font-weight: bold;
         color: #333333;
-        margin-bottom: 3px;  /* 减小标题下方间距 */
+        margin-bottom: 5px;  /* 增加间距 */
     }
     .feature-description {
         color: #444;
-        font-size: 0.95em;  /* 稍微减小描述文字 */
-        line-height: 1.1;  /* 减小行高 */
+        font-size: 1em;
+        line-height: 1.3;  /* 增加行高 */
         text-align: center;
     }
     .feature-description ul {
@@ -154,15 +154,15 @@ if page == '首页':
         margin: 0;
     }
     .feature-description li {
-        margin: 2px 0;  /* 减小列表项间距 */
-        padding: 1px;  /* 减小列表项内边距 */
+        margin: 4px 0;  /* 增加列表项间距 */
+        padding: 2px;
     }
     .intro-text {
         text-align: center;
         margin-bottom: 1.2em;
         font-size: 1.1em;
         color: #444;
-        background-color: rgba(255, 75, 75, 0.1);  /* 淡红色背景 */
+        background-color: rgba(255, 75, 75, 0.1);
         padding: 8px 15px;
         border-radius: 6px;
         display: inline-block;
