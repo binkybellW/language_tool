@@ -483,62 +483,7 @@ def text_annotation(text):
                         annotations.append((word, label))
                 st.session_state.annotations[i] = annotations
                 
-        # 导出标注结果
-        if st.button('导出标注结果', key='word_level_annotation_export'):
-            # 收集标注结果
-            results = []
-            total_words = 0
-            labeled_words = 0
-            sentence_labels = {}  # 记录每个句子的标注数量
-            
-            for sent_id, annotations in st.session_state.annotations.items():
-                sent_labeled = 0  # 当前句子的已标注词数
-                
-                for word, label in annotations:
-                    total_words += 1
-                    if label != "无标注":
-                        sent_labeled += 1
-                        labeled_words += 1
-                        results.append({
-                            'sentence_id': sent_id + 1,
-                            'word': word,
-                            'label': label
-                        })
-                
-                # 记录标注数量
-                sentence_labels[sent_id + 1] = sent_labeled
-            
-            # 创建已标注数据的DataFrame
-            df_labeled = pd.DataFrame(results)
-            
-            # 导出已标注数据
-            if not df_labeled.empty:
-                csv_labeled = df_labeled.to_csv(index=False).encode('utf-8-sig')
-                st.download_button(
-                    label="下载标注数据",
-                    data=csv_labeled,
-                    file_name="annotations.csv",
-                    mime="text/csv"
-                )
-                
-                # 显示统计信息
-                st.write("### 标注统计报告")
-                
-                # 1. 总体统计
-                st.write("**1. 总体情况**")
-                st.write(f"- 文本共分为 {len(sentences)} 个句子")
-                st.write(f"- 共有 {total_words} 个词语")
-                st.write(f"- 已标注 {labeled_words} 个词语")
-                st.write(f"- 标注率：{(labeled_words/total_words*100):.1f}%")
-                
-                # 2. 句子标注分布
-                st.write("\n**2. 句子标注分布**")
-                for i, n in sentence_labels.items():
-                    st.write(f"第 {i} 句：标注了 {n} 个词语")
-            else:
-                st.warning("没有已标注的数据可供导出")
-
-        # 统计标注结果
+        # 统计功能
         if st.button('统计标注结果', key='annotation_stats'):
             # 统计已标注的句子数
             sentences_with_labels = 0
@@ -585,47 +530,27 @@ def text_annotation(text):
                     'category': category
                 }
     
-    # 统计标注信息
-    if st.button('统计标注结果', key='annotation_export'):
-        # 收集标注结果
+    # 下载按钮放在最外层
+    if st.session_state.annotations:  # 如果有标注数据
         results = []
-        total_words = 0
-        labeled_words = 0
-        
         for sent_id, annotations in st.session_state.annotations.items():
             for word, label in annotations:
-                total_words += 1
                 if label != "无标注":
-                    labeled_words += 1
                     results.append({
                         'sentence_id': sent_id + 1,
                         'word': word,
                         'label': label
                     })
         
-        # 创建已标注数据的DataFrame
-        df_labeled = pd.DataFrame(results)
-        
-        # 导出已标注数据
-        if not df_labeled.empty:
-            csv_labeled = df_labeled.to_csv(index=False).encode('utf-8-sig')
+        if results:  # 如果有已标注的数据
+            df = pd.DataFrame(results)
+            csv = df.to_csv(index=False).encode('utf-8-sig')
             st.download_button(
                 label="下载标注数据",
-                data=csv_labeled,
+                data=csv,
                 file_name="annotations.csv",
                 mime="text/csv"
             )
-            
-            # 显示更丰富的标注统计信息
-            st.info(f"""
-            📊 标注统计：
-            - 总句数：{len(sentences)}
-            - 总词数：{total_words}
-            - 已标注词数：{labeled_words}
-            - 标注率：{(labeled_words/total_words*100):.1f}%
-            """)
-        else:
-            st.warning("没有已标注的数据可供导出")
 
 def export_danmu_analysis(df, video_title):
     """
