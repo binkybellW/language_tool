@@ -621,19 +621,26 @@ elif page == '词频统计与词云图':
             ['词频统计', '字符统计', '词云图']
         )
         
-        # 添加调试信息
-        st.write("已选择的分析类型:", analysis_type)  # 临时添加，帮助调试
-        
         if '词频统计' in analysis_type:
             st.subheader('📊 词频统计分析')
             with st.spinner('正在进行词频统计...'):
                 count_word_frequency(analysis_text)
                 
         if '字符统计' in analysis_type:
+            st.markdown("""
+                <style>
+                    div[data-testid="stHorizontalBlock"] {
+                        background-color: #f8f9fa;
+                        padding: 1rem;
+                        border-radius: 0.5rem;
+                        margin: 0.5rem 0;
+                    }
+                </style>
+            """, unsafe_allow_html=True)
+            
             st.subheader('📝 字符统计分析')
             with st.spinner('正在进行字符统计...'):
                 count_characters(analysis_text)
-                st.write("字符统计完成")  # 临时添加，帮助调试
         
         if '词云图' in analysis_type:
             st.subheader('☁️ 词云图生成')
