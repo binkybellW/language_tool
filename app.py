@@ -285,10 +285,8 @@ if page == '首页':
         </div>
         """, unsafe_allow_html=True)
 
-    # 添加图片 - 使用新参数
-    col1, col2, col3 = st.columns([1, 3, 1])  # 调整比例，让图片更大
-    with col2:
-        st.image('static/LPT.png', use_container_width=True)
+    # 添加图片 - 直接使用容器宽度
+    st.image('static/LPT.png', use_container_width=True)
     
     # 页脚信息
     st.markdown("""
