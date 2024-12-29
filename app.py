@@ -110,9 +110,7 @@ if page == '首页':
     .big-font {
         font-size: 2.8em !important;
         font-weight: bold;
-        background: linear-gradient(120deg, #155799, #159957);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
+        color: #333333;
         text-align: center;
         margin-bottom: 0.5em;
         padding: 10px;
@@ -120,7 +118,12 @@ if page == '首页':
     .feature-card {
         padding: 15px;
         border-radius: 12px;
-        background-color: #ffffff;
+        background-color: #f8f9fa;  /* 浅灰背景 */
+        /* 或者可以选择：
+        background-color: #e8f4f8;  浅蓝背景
+        background-color: #f0f7f4;  浅绿背景
+        background-color: #fff5f5;  浅粉背景
+        */
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         margin-bottom: 15px;
         transition: all 0.3s ease;
@@ -133,12 +136,12 @@ if page == '首页':
     .feature-icon {
         font-size: 2em;
         margin-bottom: 5px;
-        color: #159957;
+        color: #333333;
     }
     .feature-title {
         font-size: 1.3em;
         font-weight: bold;
-        color: #155799;
+        color: #333333;
         margin-bottom: 5px;
     }
     .feature-description {
