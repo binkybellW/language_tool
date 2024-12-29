@@ -118,7 +118,7 @@ if page == '首页':
         padding: 10px;
     }
     .feature-card {
-        padding: 20px;
+        padding: 15px;
         border-radius: 12px;
         background-color: #ffffff;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -132,19 +132,19 @@ if page == '首页':
     }
     .feature-icon {
         font-size: 2em;
-        margin-bottom: 10px;
+        margin-bottom: 5px;
         color: #159957;
     }
     .feature-title {
         font-size: 1.3em;
         font-weight: bold;
         color: #155799;
-        margin-bottom: 10px;
+        margin-bottom: 5px;
     }
     .feature-description {
         color: #444;
-        font-size: 1.05em;
-        line-height: 1.4;
+        font-size: 1em;
+        line-height: 1.2;
         text-align: center;
     }
     .feature-description ul {
@@ -153,8 +153,8 @@ if page == '首页':
         margin: 0;
     }
     .feature-description li {
-        margin: 6px 0;
-        padding: 3px;
+        margin: 3px 0;
+        padding: 2px;
     }
     .intro-text {
         text-align: center;
@@ -188,11 +188,14 @@ if page == '首页':
     </style>
     """, unsafe_allow_html=True)
 
+    # 添加本地图片
+    st.image('LPT.png', use_column_width=True)
+
     # 标题
-    st.markdown('<p class="big-font">🎯 语言分析工具集</p>', unsafe_allow_html=True)
+    st.markdown('<p class="big-font">语言分析工具集📖</p>', unsafe_allow_html=True)
 
     # 简介
-    st.markdown('<div class="intro-text">这是一个集成了多种语言分析功能的工具集，帮助您更好地分析和理解文本数据。</div>', 
+    st.markdown('<div class="intro-text">集成了多种语言分析工具，助您更好地分析和理解文本数据。</div>', 
                 unsafe_allow_html=True)
 
     # 功能卡片
@@ -230,7 +233,7 @@ if page == '首页':
     with col2:
         st.markdown("""
         <div class="feature-card">
-            <div class="feature-icon">🎯</div>
+            <div class="feature-icon">🎬</div>
             <div class="feature-title">B站弹幕分析</div>
             <div class="feature-description">
                 <ul>
