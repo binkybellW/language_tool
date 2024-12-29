@@ -105,27 +105,123 @@ st.sidebar.markdown('Made with ❤️ by Shan')
 
 # 首页
 if page == '首页':
-    st.title('语言分析工具 📚')
+    st.markdown("""
+    <style>
+    .big-font {
+        font-size: 3em !important;
+        font-weight: bold;
+        color: #FF4B4B;
+        text-align: center;
+        margin-bottom: 1em;
+    }
+    .feature-card {
+        padding: 20px;
+        border-radius: 10px;
+        background-color: #ffffff;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+        transition: transform 0.3s ease;
+    }
+    .feature-card:hover {
+        transform: translateY(-5px);
+    }
+    .feature-icon {
+        font-size: 2em;
+        margin-bottom: 10px;
+    }
+    .feature-title {
+        font-size: 1.2em;
+        font-weight: bold;
+        color: #FF4B4B;
+        margin-bottom: 10px;
+    }
+    .feature-description {
+        color: #666;
+        font-size: 0.9em;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
+    # 标题
+    st.markdown('<p class="big-font">🎯 语言分析工具集</p>', unsafe_allow_html=True)
+
+    # 简介
+    st.markdown("""
+    <div style="text-align: center; margin-bottom: 2em;">
+        这是一个集成了多种语言分析功能的工具集，帮助您更好地分析和理解文本数据。
+    </div>
+    """, unsafe_allow_html=True)
+
+    # 功能卡片
+    col1, col2 = st.columns(2)
     
-    st.write("""
-    本工具提供以下功能：
-    - 🎬 B站弹幕分析：支持B站视频弹幕获取和分析，包含词频统计、情感分析、词云图等功能
-    - 🧹 语料清洗：提供文本预处理和分词功能
-    - 📊 词频统计与词云图：对文本进行词频统计分析并生成词云图
+    with col1:
+        st.markdown("""
+        <div class="feature-card">
+            <div class="feature-icon">📊</div>
+            <div class="feature-title">文本统计分析</div>
+            <div class="feature-description">
+                • 词频统计与可视化<br>
+                • 字符统计分析<br>
+                • 词云图生成<br>
+                • 数据导出功能
+            </div>
+        </div>
+        
+        <div class="feature-card">
+            <div class="feature-icon">🧹</div>
+            <div class="feature-title">文本预处理</div>
+            <div class="feature-description">
+                • 去除标点符号<br>
+                • 去除停用词<br>
+                • 分词处理<br>
+                • 自定义处理选项
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    with col2:
+        st.markdown("""
+        <div class="feature-card">
+            <div class="feature-icon">🎯</div>
+            <div class="feature-title">B站弹幕分析</div>
+            <div class="feature-description">
+                • 弹幕数据提取<br>
+                • 情感倾向分析<br>
+                • 热点内容识别<br>
+                • 互动程度评估
+            </div>
+        </div>
+        
+        <div class="feature-card">
+            <div class="feature-icon">🏷️</div>
+            <div class="feature-title">文本标注工具</div>
+            <div class="feature-description">
+                • 词语级标注<br>
+                • 句子级标注<br>
+                • 多种标注模式<br>
+                • 标注结果导出
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    # 使用说明
+    st.markdown("""
+    <div style="margin-top: 2em; padding: 20px; border-radius: 10px; background-color: #f8f9fa;">
+        <h3 style="color: #FF4B4B;">💡 使用说明</h3>
+        <ol>
+            <li>从左侧菜单选择需要使用的功能</li>
+            <li>按照界面提示输入或上传文本数据</li>
+            <li>设置相应的分析参数</li>
+            <li>查看分析结果并下载</li>
+        </ol>
+    </div>
     
-    请使用左侧导航栏选择所需功能。
-    """)
-    
-    # 展示一些示例或使用说明
-    with st.expander("💡 使用说明"):
-        st.write("""
-        1. 所有功能都支持文件导入导出
-        2. 支持的文件格式：TXT, CSV, XLSX
-        3. 建议单次处理文本大小不超过10MB
-        """)
-    
-    # 添加首页图片，设置宽度为800像素
-    st.image('static/LPT.png', width=800)
+    <div style="margin-top: 2em; text-align: center; color: #666;">
+        <p>如有问题或建议，欢迎反馈</p>
+        <p>Version 1.0.0</p>
+    </div>
+    """, unsafe_allow_html=True)
 
 
 # B站弹幕分析部分
