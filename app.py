@@ -188,6 +188,9 @@ if page == '首页':
     </style>
     """, unsafe_allow_html=True)
 
+    # 添加本地图片
+    st.image('LPT.png', use_column_width=True)
+
     # 标题
     st.markdown('<p class="big-font">🎯 语言分析工具集</p>', unsafe_allow_html=True)
 
