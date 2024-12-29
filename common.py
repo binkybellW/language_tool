@@ -193,7 +193,7 @@ def split_words(analysis_text):
     except Exception as e:
         st.error(f"分词失败: {str(e)}")
 
-def text_annotation(text, annotation_schema=None):
+def text_annotation(text):
     """文本标注功能"""
     if not text:
         st.warning('请先输入要标注的文本')
@@ -213,6 +213,29 @@ def text_annotation(text, annotation_schema=None):
     with col3:
         remove_numbers = st.checkbox('去除数字', key='annotation_remove_num')
     
+    # 更新分词处理
+    def process_text(text):
+        # 先处理英文单词
+        # 在英文单词之间添加空格
+        text = re.sub(r'([a-zA-Z])([A-Z])', r'\1 \2', text)  # 处理驼峰命名
+        text = re.sub(r'([a-zA-Z])(\d)', r'\1 \2', text)     # 处理字母和数字
+        text = re.sub(r'(\d)([a-zA-Z])', r'\1 \2', text)     # 处理数字和字母
+        
+        # 使用jieba分词，但保留英文单词的完整性
+        words = []
+        for segment in text.split():  # 先按空格分割
+            if re.match(r'^[a-zA-Z]+$', segment):  # 如果是纯英文单词
+                words.append(segment)
+            else:  # 对非英文部分使用jieba分词
+                words.extend(jieba.lcut(segment))
+        return words
+
+    # 处理文本
+    if text:
+        st.session_state.processed_text = text
+        words = process_text(text)
+        st.session_state.words = words
+        
     # 文本预处理
     if st.button("应用预处理", key='apply_preprocessing'):
         processed_text = text
@@ -379,8 +402,21 @@ def text_annotation(text, annotation_schema=None):
             with col1:
                 st.write(f"句子 {i+1}: {sentence}")
             with col2:
-                # 为每个词创建标注选择
-                words = list(jieba.cut(sentence))
+                # 改进的分词处理
+                # 先处理英文词组
+                processed_sentence = re.sub(r'([a-zA-Z])([A-Z])', r'\1 \2', sentence)  # 处理驼峰命名
+                processed_sentence = re.sub(r'([a-zA-Z])(\d)', r'\1 \2', processed_sentence)  # 处理字母和数字
+                processed_sentence = re.sub(r'(\d)([a-zA-Z])', r'\1 \2', processed_sentence)  # 处理数字和字母
+                
+                # 分词处理
+                words = []
+                for segment in processed_sentence.split():
+                    if re.match(r'^[a-zA-Z]+$', segment):  # 如果是纯英文单词
+                        words.append(segment)
+                    else:  # 对非英文部分使用jieba分词
+                        words.extend(jieba.lcut(segment))
+                
+                # 标注处理
                 annotations = []
                 for j, word in enumerate(words):
                     if word.strip():  # 只标注非空词语
