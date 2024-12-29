@@ -485,19 +485,21 @@ def text_annotation(text):
                 
         # 统计功能
         if st.button('统计标注结果', key='annotation_stats'):
-            # 统计已标注的句子数
-            sentences_with_labels = 0
-            total_sentences = len(sentences)
+            total_words = 0
+            labeled_words = 0
             
             for sent_id, annotations in st.session_state.annotations.items():
-                # 如果句子中有任何标注就计数
-                if any(label != "无标注" for _, label in annotations):
-                    sentences_with_labels += 1
+                for word, label in annotations:
+                    total_words += 1
+                    if label != "无标注":
+                        labeled_words += 1
             
-            # 显示标注率
             st.write("### 标注统计")
-            st.write(f"已标注句子数：{sentences_with_labels}/{total_sentences}")
-            st.write(f"标注率：{(sentences_with_labels/total_sentences*100):.1f}%")
+            st.write("**1. 总体情况**")
+            st.write(f"- 文本共分为 {len(sentences)} 个句子")
+            st.write(f"- 共有 {total_words} 个词语")
+            st.write(f"- 已标注 {labeled_words} 个词语")
+            st.write(f"- 标注率：{(labeled_words/total_words*100):.1f}%")
 
     else:  # 句子级标注
         # 自定义类别
