@@ -132,21 +132,62 @@ def count_word_frequency(analysis_text):
     
     
 def count_characters(analysis_text):
-    # 统计总字数
-    char_count = len(analysis_text)
-    word_count = len(analysis_text.split())
+    # 1. 总字符数（不包括空格和换行符）
+    char_count_no_space = len([c for c in analysis_text if not c.isspace()])
     
+    # 2. 有效字符数（不包括空格、换行符和标点符号）
+    valid_chars = len([c for c in analysis_text if c.isalnum() or '\u4e00' <= c <= '\u9fff'])
     
-    # 计算除标点外的字符数
-    no_punc_count = len([c for c in analysis_text if not re.match(r'[^\w\s]', c)])
+    # 3. 分类统计
+    chinese_chars = len(re.findall(r'[\u4e00-\u9fff]', analysis_text))
+    english_chars = len(re.findall(r'[a-zA-Z]', analysis_text))
+    numbers = len(re.findall(r'\d', analysis_text))
+    spaces = len(re.findall(r'\s', analysis_text))
+    punctuation = len([c for c in analysis_text if re.match(r'[^\w\s]', c)])
     
-    st.write(f'字符数: {char_count}')
-    st.write(f'除标点外的字符数: {no_punc_count}')
+    # 4. 词数统计
+    # 英文词数
+    english_words = len([word for word in analysis_text.split() if re.match(r'[a-zA-Z]+', word)])
+    # 中文词数（使用jieba分词）
+    chinese_text = ''.join(re.findall(r'[\u4e00-\u9fff]+', analysis_text))
+    chinese_words = len(jieba.lcut(chinese_text))
+    total_words = english_words + chinese_words
+    
+    # 显示统计结果
+    st.write("### 字符统计")
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        st.write("基本统计：")
+        st.write(f'总字符数（包含所有字符）: {len(analysis_text)}')
+        st.write(f'总字符数（不含空白字符）: {char_count_no_space}')
+        st.write(f'有效字符数（仅字母、数字、汉字）: {valid_chars}')
+        st.write(f'总词数: {total_words}')
+    
+    with col2:
+        st.write("详细分类：")
+        st.write(f'中文字符数: {chinese_chars}')
+        st.write(f'英文字符数: {english_chars}')
+        st.write(f'数字个数: {numbers}')
+        st.write(f'空格及换行数: {spaces}')
+        st.write(f'标点符号数: {punctuation}')
     
     # 导出统计结果
-    stats_dict = {'字符数': char_count, '词数': word_count}
+    stats_dict = {
+        '总字符数（全部）': len(analysis_text),
+        '总字符数（不含空白）': char_count_no_space,
+        '有效字符数': valid_chars,
+        '总词数': total_words,
+        '中文字符数': chinese_chars,
+        '英文字符数': english_chars,
+        '数字个数': numbers,
+        '空格及换行数': spaces,
+        '标点符号数': punctuation,
+        '中文词数': chinese_words,
+        '英文词数': english_words
+    }
     stats_df = pd.DataFrame([stats_dict])
-    csv = stats_df.to_csv(encoding='utf-8-sig').encode('utf-8-sig')
+    csv = stats_df.to_csv(index=False, encoding='utf-8-sig').encode('utf-8-sig')
     st.download_button(
         label="下载统计结果",
         data=csv,
@@ -514,3 +555,70 @@ def text_annotation(text):
             mime="application/json",
             key="annotation_download_json"
         )
+
+def export_danmu_analysis(df, video_title):
+    """
+    导出弹幕分析结果为Excel文件
+    
+    Args:
+        df: 包含弹幕分析结果的DataFrame
+        video_title: 视频标题，用于文件命名
+    """
+    try:
+        # 创建一个BytesIO对象
+        output = io.BytesIO()
+        
+        # 使用ExcelWriter写入Excel，设置引擎为openpyxl
+        with pd.ExcelWriter(output, engine='openpyxl') as writer:
+            # 写入弹幕数据表
+            df.to_excel(writer, sheet_name='弹幕数据', index=False)
+            
+            # 获取工作簿和工作表对象
+            workbook = writer.book
+            worksheet = writer.sheets['弹幕数据']
+            
+            # 调整列宽
+            for column in worksheet.columns:
+                max_length = 0
+                column = [cell for cell in column]
+                for cell in column:
+                    try:
+                        if len(str(cell.value)) > max_length:
+                            max_length = len(str(cell.value))
+                    except:
+                        pass
+                adjusted_width = (max_length + 2)
+                worksheet.column_dimensions[column[0].column_letter].width = adjusted_width
+        
+        # 准备下载
+        output.seek(0)
+        
+        # 生成文件名（移除不合法的文件名字符）
+        safe_title = re.sub(r'[\\/*?:"<>|]', "", video_title)
+        filename = f"{safe_title}_弹幕分析.xlsx"
+        
+        # 提供下载按钮
+        st.download_button(
+            label="📥 下载弹幕分析结果(Excel)",
+            data=output.getvalue(),
+            file_name=filename,
+            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            help="下载完整的弹幕分析数据表格"
+        )
+        
+    except Exception as e:
+        st.error(f"导出Excel文件时发生错误: {str(e)}")
+        st.error("如果问题持续存在，请尝试使用CSV格式导出")
+        
+        # 提供CSV格式作为备选
+        try:
+            csv_data = df.to_csv(index=False, encoding='utf-8-sig').encode('utf-8-sig')
+            st.download_button(
+                label="📥 下载弹幕分析结果(CSV)",
+                data=csv_data,
+                file_name=f"{safe_title}_弹幕分析.csv",
+                mime="text/csv",
+                help="如果Excel下载失败，可以尝试下载CSV格式"
+            )
+        except Exception as e:
+            st.error(f"导出CSV文件也失败了: {str(e)}")
