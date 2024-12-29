@@ -522,18 +522,19 @@ def text_annotation(text):
                 )
                 
                 # 显示统计信息
-                st.info(f"""
-                📊 标注统计报告
-                ───────────────
-                总体统计：
-                • 句子总数：{len(sentences)}
-                • 词语总数：{total_words}
-                • 已标注词数：{labeled_words}
-                • 总体标注率：{(labeled_words/total_words*100):.1f}%
+                st.write("### 标注统计报告")
                 
-                句子标注分布：
-                {chr(10).join([f'• 第{i:02d}句：{n:2d} 个标注' for i, n in sentence_labels.items()])}
-                """)
+                # 1. 总体统计
+                st.write("**1. 总体情况**")
+                st.write(f"- 文本共分为 {len(sentences)} 个句子")
+                st.write(f"- 共有 {total_words} 个词语")
+                st.write(f"- 已标注 {labeled_words} 个词语")
+                st.write(f"- 标注率：{(labeled_words/total_words*100):.1f}%")
+                
+                # 2. 句子标注分布
+                st.write("\n**2. 句子标注分布**")
+                for i, n in sentence_labels.items():
+                    st.write(f"第 {i} 句：标注了 {n} 个词语")
             else:
                 st.warning("没有已标注的数据可供导出")
 
