@@ -516,87 +516,37 @@ def text_annotation(text):
     
     # 导出标注结果
     if st.button('导出标注结果', key='annotation_export'):
-        if annotation_mode == "词语级标注（标注每个词的类别）":
-            # 收集所有标注结果
-            results = []
-            for sent_id, annotations in st.session_state.annotations.items():
-                for word, label in annotations:
-                    if label != "无标注":  # 只收集已标注的词
-                        results.append({
-                            'sentence_id': sent_id + 1,
-                            'word': word,
-                            'label': label
-                        })
-            
-            # 创建完整数据和已标注数据的DataFrame
-            df_all = pd.DataFrame([
-                {
-                    'sentence_id': sent_id + 1,
-                    'word': word,
-                    'label': label
-                }
-                for sent_id, annotations in st.session_state.annotations.items()
-                for word, label in annotations
-            ])
-            
-            df_labeled = pd.DataFrame(results)
-            
-            col1, col2 = st.columns(2)
-            
-            with col1:
-                # 导出全部数据
-                if not df_all.empty:
-                    csv_all = df_all.to_csv(index=False).encode('utf-8-sig')
-                    st.download_button(
-                        label="下载全部标注数据(CSV)",
-                        data=csv_all,
-                        file_name="annotations_all.csv",
-                        mime="text/csv",
-                        help="包含所有词语的标注结果，包括未标注的词"
-                    )
-            
-            with col2:
-                # 导出已标注数据
-                if not df_labeled.empty:
-                    csv_labeled = df_labeled.to_csv(index=False).encode('utf-8-sig')
-                    st.download_button(
-                        label="下载已标注数据(CSV)",
-                        data=csv_labeled,
-                        file_name="annotations_labeled.csv",
-                        mime="text/csv",
-                        help="只包含已标注的词语（不包含"无标注"的词）",
-                    )
+        # 收集所有标注结果
+        results = []
+        for sent_id, annotations in st.session_state.annotations.items():
+            for word, label in annotations:
+                if label != "无标注":  # 只收集已标注的词
+                    results.append({
+                        'sentence_id': sent_id + 1,
+                        'word': word,
+                        'label': label
+                    })
+        
+        # 创建已标注数据的DataFrame
+        df_labeled = pd.DataFrame(results)
+        
+        # 导出已标注数据
+        if not df_labeled.empty:
+            csv_labeled = df_labeled.to_csv(index=False).encode('utf-8-sig')
+            st.download_button(
+                label="下载标注数据",
+                data=csv_labeled,
+                file_name="annotations.csv",
+                mime="text/csv"
+            )
             
             # 显示标注统计信息
             st.info(f"""
             📊 标注统计：
-            - 总词数：{len(df_all)}
             - 已标注词数：{len(df_labeled)}
-            - 标注率：{(len(df_labeled)/len(df_all)*100):.1f}%
             """)
-            
-            # 同样提供JSON格式
-            col3, col4 = st.columns(2)
-            
-            with col3:
-                if not df_all.empty:
-                    json_str_all = df_all.to_json(orient='records', force_ascii=False, indent=2)
-                    st.download_button(
-                        label="下载全部标注数据(JSON)",
-                        data=json_str_all.encode('utf-8'),
-                        file_name="annotations_all.json",
-                        mime="application/json"
-                    )
-            
-            with col4:
-                if not df_labeled.empty:
-                    json_str_labeled = df_labeled.to_json(orient='records', force_ascii=False, indent=2)
-                    st.download_button(
-                        label="下载已标注数据(JSON)",
-                        data=json_str_labeled.encode('utf-8'),
-                        file_name="annotations_labeled.json",
-                        mime="application/json"
-                    )
+        else:
+            st.warning("没有已标注的数据可供导出")
 
 def export_danmu_analysis(df, video_title):
     """
