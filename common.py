@@ -540,9 +540,11 @@ def text_annotation(text):
         all_results = []
         
         for sent_id, annotations in st.session_state.annotations.items():
+            sentence = sentences[sent_id]  # 获取原句
             for word, label in annotations:
                 result = {
                     'sentence_id': sent_id + 1,
+                    'sentence': sentence,  # 添加原句文本
                     'word': word,
                     'label': label
                 }
