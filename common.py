@@ -199,6 +199,10 @@ def text_annotation(text, annotation_schema=None):
         st.warning('请先输入要标注的文本')
         return
     
+    # 使用session_state存储处理后的文本
+    if 'processed_text' not in st.session_state:
+        st.session_state.processed_text = text
+    
     # 文本预处理选项
     st.write("### 文本预处理选项")
     col1, col2, col3 = st.columns(3)
@@ -210,25 +214,28 @@ def text_annotation(text, annotation_schema=None):
         remove_numbers = st.checkbox('去除数字', key='annotation_remove_num')
     
     # 文本预处理
-    processed_text = text
-    if remove_punctuation:
-        # 保留句号、感叹号、问号等分句标点
-        processed_text = re.sub(r'[^\w\s。！？!?.]', '', processed_text)
-    if remove_spaces:
-        # 合并多个空格为单个空格
-        processed_text = ' '.join(processed_text.split())
-    if remove_numbers:
-        processed_text = re.sub(r'\d+', '', processed_text)
+    if st.button("应用预处理", key='apply_preprocessing'):
+        processed_text = text
+        if remove_punctuation:
+            # 保留句号、感叹号、问号等分句标点
+            processed_text = re.sub(r'[^\w\s。！？!?.]', '', processed_text)
+        if remove_spaces:
+            # 合并多个空格为单个空格并移除英文单词之间的空格
+            words = processed_text.split()
+            processed_text = ''.join(words)
+        if remove_numbers:
+            processed_text = re.sub(r'\d+', '', processed_text)
+        
+        # 保存处理后的文本
+        st.session_state.processed_text = processed_text
+        st.success('预处理完成！')
     
-    # 显示预处理后的文本
-    if remove_punctuation or remove_spaces or remove_numbers:
-        st.write("### 预处理后的文本")
-        st.text_area("预处理结果：", processed_text, height=100, key='annotation_processed_text')
-        if st.button("使用预处理后的文本", key='annotation_use_processed'):
-            text = processed_text
+    # 显示当前要处理的文本
+    st.write("### 当前文本")
+    st.text_area("文本内容：", st.session_state.processed_text, height=100, key='current_text_display')
     
-    # 分句（保持原有的分句逻辑）
-    sentences = re.split(r'([。！？.!?])', text)
+    # 分句
+    sentences = re.split(r'([。！？.!?])', st.session_state.processed_text)
     sentences = [''.join(i) for i in zip(sentences[0::2], sentences[1::2] + [''])]
     sentences = [s.strip() for s in sentences if s.strip()]
     
@@ -239,15 +246,17 @@ def text_annotation(text, annotation_schema=None):
     st.write("### 标注设置")
     annotation_mode = st.radio(
         "选择标注模式：",
-        ["序列标注", "分类标注"],
+        ["词语级标注（标注每个词的类别）", "句子级标注（标注整句的类别）"],
         key="annotation_mode_select"
     )
     
-    if annotation_mode == "序列标注":
+    if annotation_mode == "词语级标注（标注每个词的类别）":
         # 自定义标签
+        st.write("设置词语标注的类别，例如：人名、地名、组织名等")
         custom_labels = st.text_input(
-            "输入自定义标签（用逗号分隔，如：人名,地名,组织）：",
-            value="人名,地名,组织",
+            "输入标注类别（用逗号分隔）：",
+            value="人名,地名,组织名,时间,其他",
+            help="这些类别将用于标注文本中的每个词语",
             key="annotation_custom_labels"
         ).split(',')
         
@@ -256,7 +265,7 @@ def text_annotation(text, annotation_schema=None):
             st.session_state.annotations = {}
         
         # 显示标注界面
-        st.write("### 序列标注")
+        st.write("### 词语标注")
         for i, sentence in enumerate(sentences):
             col1, col2 = st.columns([3, 1])
             with col1:
@@ -266,21 +275,23 @@ def text_annotation(text, annotation_schema=None):
                 words = list(jieba.cut(sentence))
                 annotations = []
                 for j, word in enumerate(words):
-                    # 使用句子索引、词语索引和词语本身组合作为唯一key
-                    unique_key = f"annotation_seq_{i}_{j}_{word}"
-                    label = st.selectbox(
-                        f"标注 '{word}'",
-                        ["O"] + custom_labels,
-                        key=unique_key
-                    )
-                    annotations.append((word, label))
+                    if word.strip():  # 只标注非空词语
+                        unique_key = f"annotation_seq_{i}_{j}_{word}"
+                        label = st.selectbox(
+                            f"'{word}' 的类别",
+                            ["无标注"] + custom_labels,
+                            key=unique_key
+                        )
+                        annotations.append((word, label))
                 st.session_state.annotations[i] = annotations
                 
-    else:  # 分类标注
+    else:  # 句子级标注
         # 自定义类别
+        st.write("设置句子标注的类别，例如：积极、消极、中性等")
         custom_categories = st.text_input(
-            "输入分类标签（用逗号分隔，如：积极,消极,中性）：",
+            "输入标注类别（用逗号分隔）：",
             value="积极,消极,中性",
+            help="这些类别将用于标注整个句子的属性",
             key="annotation_custom_categories"
         ).split(',')
         
@@ -289,14 +300,14 @@ def text_annotation(text, annotation_schema=None):
             st.session_state.classifications = {}
             
         # 显示分类界面
-        st.write("### 分类标注")
+        st.write("### 句子标注")
         for i, sentence in enumerate(sentences):
             col1, col2 = st.columns([3, 1])
             with col1:
                 st.write(f"句子 {i+1}: {sentence}")
             with col2:
                 category = st.selectbox(
-                    "选择类别",
+                    "选择句子类别",
                     custom_categories,
                     key=f"annotation_cat_{i}"
                 )
@@ -307,7 +318,7 @@ def text_annotation(text, annotation_schema=None):
     
     # 导出标注结果
     if st.button('导出标注结果', key='annotation_export'):
-        if annotation_mode == "序列标注":
+        if annotation_mode == "词语级标注（标注每个词的类别）":
             results = []
             for sent_id, annotations in st.session_state.annotations.items():
                 for word, label in annotations:
