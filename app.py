@@ -272,23 +272,23 @@ if page == '首页':
         </div>
         """, unsafe_allow_html=True)
 
-    # 使用说明 - 减小尺寸和间距
-    st.markdown("""
-    <div style="margin-top: 1.5em; padding: 15px; border-radius: 12px; background-color: #f8f9fa;">
-        <h3 style="color: #155799; margin-bottom: 10px; font-size: 1.2em;">💡 使用说明</h3>
-        <ol style="font-size: 1em; line-height: 1.4; color: #444; margin: 0; padding-left: 20px;">
-            <li>从左侧菜单选择需要使用的功能</li>
-            <li>按照界面提示输入或上传文本数据</li>
-            <li>设置相应的分析参数</li>
-            <li>查看分析结果并下载</li>
-        </ol>
-    </div>
-    """, unsafe_allow_html=True)
+    # 使用说明 - 可折叠
+    with st.expander("💡 使用说明"):
+        st.markdown("""
+        <div style="padding: 10px;">
+            <ol style="font-size: 1em; line-height: 1.4; color: #444; margin: 0; padding-left: 20px;">
+                <li>从左侧菜单选择需要使用的功能</li>
+                <li>按照界面提示输入或上传文本数据</li>
+                <li>设置相应的分析参数</li>
+                <li>查看分析结果并下载</li>
+            </ol>
+        </div>
+        """, unsafe_allow_html=True)
 
-    # 添加图片 - 限制最大宽度
-    col1, col2, col3 = st.columns([1, 2, 1])
+    # 添加图片 - 使用新参数
+    col1, col2, col3 = st.columns([1, 3, 1])  # 调整比例，让图片更大
     with col2:
-        st.image('static/LPT.png', use_column_width=True)
+        st.image('static/LPT.png', use_container_width=True)
     
     # 页脚信息
     st.markdown("""
