@@ -489,14 +489,12 @@ def text_annotation(text):
             results = []
             total_words = 0
             labeled_words = 0
-            sentence_stats = {}  # 记录每个句子的标注统计
+            sentence_labels = {}  # 记录每个句子的标注数量
             
             for sent_id, annotations in st.session_state.annotations.items():
                 sent_labeled = 0  # 当前句子的已标注词数
-                sent_total = 0    # 当前句子的总词数
                 
                 for word, label in annotations:
-                    sent_total += 1
                     total_words += 1
                     if label != "无标注":
                         sent_labeled += 1
@@ -507,12 +505,8 @@ def text_annotation(text):
                             'label': label
                         })
                 
-                # 保存每个句子的统计信息
-                sentence_stats[sent_id + 1] = {
-                    'total': sent_total,
-                    'labeled': sent_labeled,
-                    'rate': (sent_labeled/sent_total*100) if sent_total > 0 else 0
-                }
+                # 只记录标注数量
+                sentence_labels[sent_id + 1] = sent_labeled
             
             # 创建已标注数据的DataFrame
             df_labeled = pd.DataFrame(results)
@@ -527,24 +521,17 @@ def text_annotation(text):
                     mime="text/csv"
                 )
                 
-                # 显示总体统计信息
+                # 显示统计信息
                 st.info(f"""
-                📊 总体标注统计：
+                📊 标注统计：
                 - 总句数：{len(sentences)}
                 - 总词数：{total_words}
                 - 已标注词数：{labeled_words}
-                - 总体标注率：{(labeled_words/total_words*100):.1f}%
-                """)
+                - 标注率：{(labeled_words/total_words*100):.1f}%
                 
-                # 显示句子级别的标注分布
-                st.write("📝 句子级别标注分布：")
-                for sent_id, stats in sentence_stats.items():
-                    st.write(f"""
-                    句子 {sent_id}:
-                    - 词数：{stats['total']}
-                    - 已标注：{stats['labeled']}
-                    - 标注率：{stats['rate']:.1f}%
-                    """)
+                各句标注数量：
+                {' '.join([f'句{i}: {n}个' for i, n in sentence_labels.items()])}
+                """)
             else:
                 st.warning("没有已标注的数据可供导出")
 
