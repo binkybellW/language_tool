@@ -558,67 +558,28 @@ def text_annotation(text):
 
 def export_danmu_analysis(df, video_title):
     """
-    导出弹幕分析结果为Excel文件
+    导出弹幕分析结果为CSV文件
     
     Args:
         df: 包含弹幕分析结果的DataFrame
         video_title: 视频标题，用于文件命名
     """
     try:
-        # 创建一个BytesIO对象
-        output = io.BytesIO()
-        
-        # 使用ExcelWriter写入Excel，设置引擎为openpyxl
-        with pd.ExcelWriter(output, engine='openpyxl') as writer:
-            # 写入弹幕数据表
-            df.to_excel(writer, sheet_name='弹幕数据', index=False)
-            
-            # 获取工作簿和工作表对象
-            workbook = writer.book
-            worksheet = writer.sheets['弹幕数据']
-            
-            # 调整列宽
-            for column in worksheet.columns:
-                max_length = 0
-                column = [cell for cell in column]
-                for cell in column:
-                    try:
-                        if len(str(cell.value)) > max_length:
-                            max_length = len(str(cell.value))
-                    except:
-                        pass
-                adjusted_width = (max_length + 2)
-                worksheet.column_dimensions[column[0].column_letter].width = adjusted_width
-        
-        # 准备下载
-        output.seek(0)
-        
         # 生成文件名（移除不合法的文件名字符）
         safe_title = re.sub(r'[\\/*?:"<>|]', "", video_title)
-        filename = f"{safe_title}_弹幕分析.xlsx"
+        filename = f"{safe_title}_弹幕分析.csv"
+        
+        # 转换为CSV并编码
+        csv_data = df.to_csv(index=False, encoding='utf-8-sig').encode('utf-8-sig')
         
         # 提供下载按钮
         st.download_button(
-            label="📥 下载弹幕分析结果(Excel)",
-            data=output.getvalue(),
+            label="📥 下载弹幕分析结果",
+            data=csv_data,
             file_name=filename,
-            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-            help="下载完整的弹幕分析数据表格"
+            mime="text/csv",
+            help="下载完整的弹幕分析数据"
         )
         
     except Exception as e:
-        st.error(f"导出Excel文件时发生错误: {str(e)}")
-        st.error("如果问题持续存在，请尝试使用CSV格式导出")
-        
-        # 提供CSV格式作为备选
-        try:
-            csv_data = df.to_csv(index=False, encoding='utf-8-sig').encode('utf-8-sig')
-            st.download_button(
-                label="📥 下载弹幕分析结果(CSV)",
-                data=csv_data,
-                file_name=f"{safe_title}_弹幕分析.csv",
-                mime="text/csv",
-                help="如果Excel下载失败，可以尝试下载CSV格式"
-            )
-        except Exception as e:
-            st.error(f"导出CSV文件也失败了: {str(e)}")
+        st.error(f"导出文件时发生错误: {str(e)}")
