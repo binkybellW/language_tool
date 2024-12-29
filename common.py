@@ -514,13 +514,18 @@ def text_annotation(text):
                     'category': category
                 }
     
-    # 导出标注结果
-    if st.button('导出标注结果', key='annotation_export'):
-        # 收集所有标注结果
+    # 统计标注信息
+    if st.button('统计标注结果', key='annotation_export'):
+        # 收集标注结果
         results = []
+        total_words = 0
+        labeled_words = 0
+        
         for sent_id, annotations in st.session_state.annotations.items():
             for word, label in annotations:
-                if label != "无标注":  # 只收集已标注的词
+                total_words += 1
+                if label != "无标注":
+                    labeled_words += 1
                     results.append({
                         'sentence_id': sent_id + 1,
                         'word': word,
@@ -540,10 +545,13 @@ def text_annotation(text):
                 mime="text/csv"
             )
             
-            # 显示标注统计信息
+            # 显示更丰富的标注统计信息
             st.info(f"""
             📊 标注统计：
-            - 已标注词数：{len(df_labeled)}
+            - 总句数：{len(sentences)}
+            - 总词数：{total_words}
+            - 已标注词数：{labeled_words}
+            - 标注率：{(labeled_words/total_words*100):.1f}%
             """)
         else:
             st.warning("没有已标注的数据可供导出")
