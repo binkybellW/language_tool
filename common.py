@@ -203,11 +203,11 @@ def text_annotation(text, annotation_schema=None):
     st.write("### 文本预处理选项")
     col1, col2, col3 = st.columns(3)
     with col1:
-        remove_punctuation = st.checkbox('去除标点符号', key='remove_punct_checkbox')
+        remove_punctuation = st.checkbox('去除标点符号', key='annotation_remove_punct')
     with col2:
-        remove_spaces = st.checkbox('去除多余空格', key='remove_space_checkbox')
+        remove_spaces = st.checkbox('去除多余空格', key='annotation_remove_space')
     with col3:
-        remove_numbers = st.checkbox('去除数字', key='remove_num_checkbox')
+        remove_numbers = st.checkbox('去除数字', key='annotation_remove_num')
     
     # 文本预处理
     processed_text = text
@@ -221,8 +221,8 @@ def text_annotation(text, annotation_schema=None):
     # 显示预处理后的文本
     if remove_punctuation or remove_spaces or remove_numbers:
         st.write("### 预处理后的文本")
-        st.text_area("预处理结果：", processed_text, height=100, key='processed_text_area')
-        if st.button("使用预处理后的文本", key='use_processed_text'):
+        st.text_area("预处理结果：", processed_text, height=100, key='annotation_processed_text')
+        if st.button("使用预处理后的文本", key='annotation_use_processed'):
             text = processed_text
     
     # 分句
@@ -235,7 +235,7 @@ def text_annotation(text, annotation_schema=None):
     annotation_mode = st.radio(
         "选择标注模式：",
         ["序列标注", "分类标注"],
-        key="annotation_mode_radio"
+        key="annotation_mode_select"
     )
     
     if annotation_mode == "序列标注":
@@ -243,7 +243,7 @@ def text_annotation(text, annotation_schema=None):
         custom_labels = st.text_input(
             "输入自定义标签（用逗号分隔，如：人名,地名,组织）：",
             value="人名,地名,组织",
-            key="custom_labels_input"
+            key="annotation_custom_labels"
         ).split(',')
         
         # 初始化标注结果
@@ -260,11 +260,13 @@ def text_annotation(text, annotation_schema=None):
                 # 为每个词创建标注选择
                 words = list(jieba.cut(sentence))
                 annotations = []
-                for word in words:
+                for j, word in enumerate(words):
+                    # 使用句子索引、词语索引和词语本身组合作为唯一key
+                    unique_key = f"annotation_seq_{i}_{j}_{word}"
                     label = st.selectbox(
                         f"标注 '{word}'",
                         ["O"] + custom_labels,
-                        key=f"seq_label_{i}_{word}"
+                        key=unique_key
                     )
                     annotations.append((word, label))
                 st.session_state.annotations[i] = annotations
@@ -273,7 +275,8 @@ def text_annotation(text, annotation_schema=None):
         # 自定义类别
         custom_categories = st.text_input(
             "输入分类标签（用逗号分隔，如：积极,消极,中性）：",
-            value="积极,消极,中性"
+            value="积极,消极,中性",
+            key="annotation_custom_categories"
         ).split(',')
         
         # 初始化分类结果
@@ -290,7 +293,7 @@ def text_annotation(text, annotation_schema=None):
                 category = st.selectbox(
                     "选择类别",
                     custom_categories,
-                    key=f"cat_label_{i}"
+                    key=f"annotation_cat_{i}"
                 )
                 st.session_state.classifications[i] = {
                     'text': sentence,
@@ -298,9 +301,8 @@ def text_annotation(text, annotation_schema=None):
                 }
     
     # 导出标注结果
-    if st.button('导出标注结果'):
+    if st.button('导出标注结果', key='annotation_export'):
         if annotation_mode == "序列标注":
-            # 序列标注结果导出
             results = []
             for sent_id, annotations in st.session_state.annotations.items():
                 for word, label in annotations:
@@ -311,7 +313,6 @@ def text_annotation(text, annotation_schema=None):
                     })
             df = pd.DataFrame(results)
         else:
-            # 分类标注结果导出
             df = pd.DataFrame([
                 {
                     'sentence_id': k + 1,
@@ -327,7 +328,8 @@ def text_annotation(text, annotation_schema=None):
             label="下载标注结果(CSV)",
             data=csv,
             file_name="annotations.csv",
-            mime="text/csv"
+            mime="text/csv",
+            key="annotation_download_csv"
         )
         
         # 导出为JSON
@@ -336,5 +338,6 @@ def text_annotation(text, annotation_schema=None):
             label="下载标注结果(JSON)",
             data=json_str.encode('utf-8'),
             file_name="annotations.json",
-            mime="application/json"
+            mime="application/json",
+            key="annotation_download_json"
         )
