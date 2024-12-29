@@ -286,8 +286,10 @@ if page == '首页':
         </div>
         """, unsafe_allow_html=True)
 
-    # 直接显示原图
-    st.image('static/LPT.png')
+    # 使用列布局来控制图片宽度
+    col1, col2, col3 = st.columns([0.05, 0.9, 0.05])  # 使用90%的宽度
+    with col2:
+        st.image('static/LPT.png', use_container_width=True)
     
     # 页脚信息
     st.markdown("""
