@@ -107,6 +107,15 @@ st.sidebar.markdown('Made with ❤️ by Shan')
 if page == '首页':
     st.markdown("""
     <style>
+    /* 添加页面背景色 */
+    .stApp {
+        background-color: #f5f7f9;  /* 柔和的浅蓝灰色 */
+        /* 其他选项：
+        background-color: #f7f7f7;  浅灰色
+        background-color: #f5f8f6;  浅青灰色
+        background-color: #faf8f6;  温暖的米色
+        */
+    }
     .big-font {
         font-size: 2.8em !important;
         font-weight: bold;
@@ -118,12 +127,7 @@ if page == '首页':
     .feature-card {
         padding: 15px;
         border-radius: 12px;
-        background-color: #f8f9fa;  /* 浅灰背景 */
-        /* 或者可以选择：
-        background-color: #e8f4f8;  浅蓝背景
-        background-color: #f0f7f4;  浅绿背景
-        background-color: #fff5f5;  浅粉背景
-        */
+        background-color: #ffffff;  /* 改回纯白色以与背景区分 */
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         margin-bottom: 15px;
         transition: all 0.3s ease;
@@ -194,7 +198,7 @@ if page == '首页':
 
 
     # 标题
-    st.markdown('<p class="big-font">语言分析工具集📖</p>', unsafe_allow_html=True)
+    st.markdown('<p class="big-font">语言分析工具集 📚 </p>', unsafe_allow_html=True)
 
     # 简介
     st.markdown('<div class="intro-text">集成了多种语言分析工具，助您更好地分析和理解文本数据。</div>', 
