@@ -108,38 +108,63 @@ if page == '首页':
     st.markdown("""
     <style>
     .big-font {
-        font-size: 3em !important;
+        font-size: 3.2em !important;
         font-weight: bold;
-        color: #FF4B4B;
+        background: linear-gradient(120deg, #155799, #159957);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
         text-align: center;
         margin-bottom: 1em;
+        padding: 20px;
     }
     .feature-card {
-        padding: 20px;
-        border-radius: 10px;
+        padding: 25px;
+        border-radius: 15px;
         background-color: #ffffff;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        margin-bottom: 20px;
-        transition: transform 0.3s ease;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        margin-bottom: 25px;
+        transition: all 0.3s ease;
+        text-align: center;
     }
     .feature-card:hover {
         transform: translateY(-5px);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
     }
     .feature-icon {
-        font-size: 2em;
-        margin-bottom: 10px;
+        font-size: 2.5em;
+        margin-bottom: 15px;
+        color: #159957;
     }
     .feature-title {
-        font-size: 1.2em;
+        font-size: 1.4em;
         font-weight: bold;
-        color: #FF4B4B;
-        margin-bottom: 10px;
+        color: #155799;
+        margin-bottom: 15px;
     }
     .feature-description {
-        color: #666;
-        font-size: 0.9em;
+        color: #444;
+        font-size: 1.1em;
+        line-height: 1.6;
+        text-align: center;
+    }
+    .feature-description ul {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+    }
+    .feature-description li {
+        margin: 10px 0;
+        padding: 5px;
     }
     </style>
+    """, unsafe_allow_html=True)
+
+    # 添加背景图片
+    st.markdown("""
+    <div style="text-align: center; margin-bottom: 2em;">
+        <img src="https://raw.githubusercontent.com/your_username/your_repo/main/background.jpg" 
+             style="max-width: 100%; height: auto; border-radius: 10px; margin-bottom: 20px;">
+    </div>
     """, unsafe_allow_html=True)
 
     # 标题
@@ -147,7 +172,7 @@ if page == '首页':
 
     # 简介
     st.markdown("""
-    <div style="text-align: center; margin-bottom: 2em;">
+    <div style="text-align: center; margin-bottom: 2em; font-size: 1.2em; color: #444;">
         这是一个集成了多种语言分析功能的工具集，帮助您更好地分析和理解文本数据。
     </div>
     """, unsafe_allow_html=True)
@@ -161,10 +186,12 @@ if page == '首页':
             <div class="feature-icon">📊</div>
             <div class="feature-title">文本统计分析</div>
             <div class="feature-description">
-                • 词频统计与可视化<br>
-                • 字符统计分析<br>
-                • 词云图生成<br>
-                • 数据导出功能
+                <ul>
+                    <li>• 词频统计与可视化</li>
+                    <li>• 字符统计分析</li>
+                    <li>• 词云图生成</li>
+                    <li>• 数据导出功能</li>
+                </ul>
             </div>
         </div>
         
@@ -172,10 +199,12 @@ if page == '首页':
             <div class="feature-icon">🧹</div>
             <div class="feature-title">文本预处理</div>
             <div class="feature-description">
-                • 去除标点符号<br>
-                • 去除停用词<br>
-                • 分词处理<br>
-                • 自定义处理选项
+                <ul>
+                    <li>• 去除标点符号</li>
+                    <li>• 去除停用词</li>
+                    <li>• 分词处理</li>
+                    <li>• 自定义处理选项</li>
+                </ul>
             </div>
         </div>
         """, unsafe_allow_html=True)
@@ -186,10 +215,12 @@ if page == '首页':
             <div class="feature-icon">🎯</div>
             <div class="feature-title">B站弹幕分析</div>
             <div class="feature-description">
-                • 弹幕数据提取<br>
-                • 情感倾向分析<br>
-                • 热点内容识别<br>
-                • 互动程度评估
+                <ul>
+                    <li>• 弹幕数据提取</li>
+                    <li>• 情感倾向分析</li>
+                    <li>• 热点内容识别</li>
+                    <li>• 互动程度评估</li>
+                </ul>
             </div>
         </div>
         
@@ -197,19 +228,21 @@ if page == '首页':
             <div class="feature-icon">🏷️</div>
             <div class="feature-title">文本标注工具</div>
             <div class="feature-description">
-                • 词语级标注<br>
-                • 句子级标注<br>
-                • 多种标注模式<br>
-                • 标注结果导出
+                <ul>
+                    <li>• 词语级标注</li>
+                    <li>• 句子级标注</li>
+                    <li>• 多种标注模式</li>
+                    <li>• 标注结果导出</li>
+                </ul>
             </div>
         </div>
         """, unsafe_allow_html=True)
 
     # 使用说明
     st.markdown("""
-    <div style="margin-top: 2em; padding: 20px; border-radius: 10px; background-color: #f8f9fa;">
-        <h3 style="color: #FF4B4B;">💡 使用说明</h3>
-        <ol>
+    <div style="margin-top: 2em; padding: 25px; border-radius: 15px; background-color: #f8f9fa;">
+        <h3 style="color: #155799; margin-bottom: 15px;">💡 使用说明</h3>
+        <ol style="font-size: 1.1em; line-height: 1.6; color: #444;">
             <li>从左侧菜单选择需要使用的功能</li>
             <li>按照界面提示输入或上传文本数据</li>
             <li>设置相应的分析参数</li>
