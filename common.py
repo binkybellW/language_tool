@@ -251,14 +251,73 @@ def text_annotation(text, annotation_schema=None):
     )
     
     if annotation_mode == "词语级标注（标注每个词的类别）":
+        # 标注类型选择
+        label_type = st.radio(
+            "选择标注类型：",
+            ["命名实体", "词性", "语义角色"],
+            key="label_type_select"
+        )
+        
+        # 根据不同的标注类型提供不同的默认标签
+        if label_type == "命名实体":
+            default_labels = "人名,地名,组织名,时间,数量,其他"
+            help_text = "用于标注文本中的实体类型"
+        elif label_type == "词性":
+            default_labels = "名词,动词,形容词,副词,代词,介词,连词,助词,叹词,数词,量词,其他"
+            help_text = "用于标注词语的词性类别"
+        else:  # 语义角色
+            default_labels = "施事,受事,与事,工具,处所,时间,方式,原因,目的,结果,其他"
+            help_text = "用于标注词语在句子中的语义角色"
+        
         # 自定义标签
-        st.write("设置词语标注的类别，例如：人名、地名、组织名等")
+        st.write(f"设置{label_type}标注的类别")
         custom_labels = st.text_input(
             "输入标注类别（用逗号分隔）：",
-            value="人名,地名,组织名,时间,其他",
-            help="这些类别将用于标注文本中的每个词语",
+            value=default_labels,
+            help=help_text,
             key="annotation_custom_labels"
         ).split(',')
+        
+        # 显示标注说明
+        with st.expander("查看标注说明"):
+            if label_type == "命名实体":
+                st.markdown("""
+                - 人名：人物的姓名
+                - 地名：地理位置名称
+                - 组织名：公司、机构、组织等名称
+                - 时间：时间词语
+                - 数量：数量词语
+                - 其他：其他类型的实体
+                """)
+            elif label_type == "词性":
+                st.markdown("""
+                - 名词：表示人、事物、概念等
+                - 动词：表示动作、行为、变化等
+                - 形容词：表示性质、状态等
+                - 副词：修饰动词、形容词等
+                - 代词：代替名词、数词等
+                - 介词：表示关系的虚词
+                - 连词：连接词语、句子的虚词
+                - 助词：辅助表达的虚词
+                - 叹词：表示感叹语气
+                - 数词：表示数量
+                - 量词：表示单位
+                - 其他：其他词性
+                """)
+            else:  # 语义角色
+                st.markdown("""
+                - 施事：动作的执行者
+                - 受事：动作的承受者
+                - 与事：动作涉及的其他对象
+                - 工具：动作使用的工具
+                - 处所：动作发生的地点
+                - 时间：动作发生的时间
+                - 方式：动作的方式
+                - 原因：动作的原因
+                - 目的：动作的目的
+                - 结果：动作的结果
+                - 其他：其他语义角色
+                """)
         
         # 初始化标注结果
         if 'annotations' not in st.session_state:
