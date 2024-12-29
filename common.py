@@ -158,14 +158,14 @@ def count_characters(analysis_text):
     col1, col2 = st.columns(2)
     
     with col1:
-        st.write("基本统计：")
+        st.markdown("**基本统计：**")
         st.write(f'总字符数（包含所有字符）: {len(analysis_text)}')
         st.write(f'总字符数（不含空白字符）: {char_count_no_space}')
         st.write(f'有效字符数（仅字母、数字、汉字）: {valid_chars}')
         st.write(f'总词数: {total_words}')
     
     with col2:
-        st.write("详细分类：")
+        st.markdown("**详细分类：**")
         st.write(f'中文字符数: {chinese_chars}')
         st.write(f'英文字符数: {english_chars}')
         st.write(f'数字个数: {numbers}')
