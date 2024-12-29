@@ -200,7 +200,7 @@ if page == '首页':
 
 
     # 标题
-    st.markdown('<p class="big-font">语言分析工具集📖</p>', unsafe_allow_html=True)
+    st.markdown('<p class="big-font">语言分析工具集 📚 </p>', unsafe_allow_html=True)
 
     # 简介
     st.markdown("""
@@ -211,8 +211,8 @@ if page == '首页':
     </div>
     """, unsafe_allow_html=True)
 
-    # 功能卡片
-    col1, col2 = st.columns(2)
+    # 使用自定义列宽布局
+    col1, mid, col2 = st.columns([3, 1, 3])  # 3:1:3 的比例，中间留空
     
     with col1:
         st.markdown("""
