@@ -192,3 +192,120 @@ def split_words(analysis_text):
         
     except Exception as e:
         st.error(f"分词失败: {str(e)}")
+
+def text_annotation(text, annotation_schema=None):
+    """文本标注功能"""
+    if not text:
+        st.warning('请先输入要标注的文本')
+        return
+    
+    # 分句
+    sentences = re.split(r'([。！？.!?])', text)
+    sentences = [''.join(i) for i in zip(sentences[0::2], sentences[1::2] + [''])]
+    sentences = [s.strip() for s in sentences if s.strip()]
+    
+    # 标注模式选择
+    annotation_mode = st.radio(
+        "选择标注模式：",
+        ["序列标注", "分类标注"]
+    )
+    
+    if annotation_mode == "序列标注":
+        # 自定义标签
+        custom_labels = st.text_input(
+            "输入自定义标签（用逗号分隔，如：人名,地名,组织）：",
+            value="人名,地名,组织"
+        ).split(',')
+        
+        # 初始化标注结果
+        if 'annotations' not in st.session_state:
+            st.session_state.annotations = {}
+        
+        # 显示标注界面
+        st.write("### 序列标注")
+        for i, sentence in enumerate(sentences):
+            col1, col2 = st.columns([3, 1])
+            with col1:
+                st.write(f"句子 {i+1}: {sentence}")
+            with col2:
+                # 为每个词创建标注选择
+                words = list(jieba.cut(sentence))
+                annotations = []
+                for word in words:
+                    label = st.selectbox(
+                        f"标注 '{word}'",
+                        ["O"] + custom_labels,
+                        key=f"seq_label_{i}_{word}"
+                    )
+                    annotations.append((word, label))
+                st.session_state.annotations[i] = annotations
+                
+    else:  # 分类标注
+        # 自定义类别
+        custom_categories = st.text_input(
+            "输入分类标签（用逗号分隔，如：积极,消极,中性）：",
+            value="积极,消极,中性"
+        ).split(',')
+        
+        # 初始化分类结果
+        if 'classifications' not in st.session_state:
+            st.session_state.classifications = {}
+            
+        # 显示分类界面
+        st.write("### 分类标注")
+        for i, sentence in enumerate(sentences):
+            col1, col2 = st.columns([3, 1])
+            with col1:
+                st.write(f"句子 {i+1}: {sentence}")
+            with col2:
+                category = st.selectbox(
+                    "选择类别",
+                    custom_categories,
+                    key=f"cat_label_{i}"
+                )
+                st.session_state.classifications[i] = {
+                    'text': sentence,
+                    'category': category
+                }
+    
+    # 导出标注结果
+    if st.button('导出标注结果'):
+        if annotation_mode == "序列标注":
+            # 序列标注结果导出
+            results = []
+            for sent_id, annotations in st.session_state.annotations.items():
+                for word, label in annotations:
+                    results.append({
+                        'sentence_id': sent_id + 1,
+                        'word': word,
+                        'label': label
+                    })
+            df = pd.DataFrame(results)
+        else:
+            # 分类标注结果导出
+            df = pd.DataFrame([
+                {
+                    'sentence_id': k + 1,
+                    'text': v['text'],
+                    'category': v['category']
+                }
+                for k, v in st.session_state.classifications.items()
+            ])
+        
+        # 导出为CSV
+        csv = df.to_csv(index=False).encode('utf-8-sig')
+        st.download_button(
+            label="下载标注结果(CSV)",
+            data=csv,
+            file_name="annotations.csv",
+            mime="text/csv"
+        )
+        
+        # 导出为JSON
+        json_str = df.to_json(orient='records', force_ascii=False, indent=2)
+        st.download_button(
+            label="下载标注结果(JSON)",
+            data=json_str.encode('utf-8'),
+            file_name="annotations.json",
+            mime="application/json"
+        )

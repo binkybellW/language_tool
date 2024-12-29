@@ -13,7 +13,7 @@ import base64
 import tempfile
 import copy
 
-from common import generate_wordcloud,count_word_frequency,count_characters,split_words
+from common import generate_wordcloud,count_word_frequency,count_characters,split_words,text_annotation
 
 
 example_text="人工智能（Artificial Intelligence, AI）是计算机科学的一个分支，旨在创建能够像人类一样思考和学习的智能机器。AI技术包括机器学习（Machine Learning）、自然语言处理（Natural Language Processing）和计算机视觉（Computer Vision）等。随着科技的进步，AI在各个领域的应用越来越广泛，例如自动驾驶（Autonomous Driving）、医疗诊断（Medical Diagnosis）和智能客服（Intelligent Customer Service）等。AI的快速发展不仅改变了我们的生活方式，也引发了关于伦理和隐私的广泛讨论。未来，AI有望在教育、金融、制造业等更多领域发挥重要作用，推动社会的进一步发展。AI的潜力是无限的，它不仅可以提高生产效率，还可以通过分析大量数据来提供更好的决策支持。随着AI算法的不断优化和计算能力的提升，我们可以期待AI在解决复杂问题和创新方面带来更多突破。"
@@ -90,7 +90,7 @@ st.sidebar.title('导航菜单')
 st.sidebar.markdown('---')
 
 # 简化的导航选项
-pages = ['首页', 'B站弹幕分析', '语料清洗', '词频统计与词云图']
+pages = ['首页', 'B站弹幕分析', '语料清洗', '词频统计与词云图', '标注工具']
 
 page = st.sidebar.radio(
     '选择功能',
@@ -255,7 +255,7 @@ elif page == 'B站弹幕分析':
                             sentiment_df.columns = ['数量']
                             st.dataframe(sentiment_df)
 
-                            # 添��显示各类情感幕的选项
+                            # 添加显示各类情感幕的选项
                             show_examples = st.checkbox('显示情感分类弹幕示例')
                             if show_examples:
                                 display_count = st.number_input('每类显示条数', min_value=1, value=5)
@@ -465,3 +465,35 @@ elif page == '词频统计与词云图':
             st.subheader('☁️ 词云图生成')
             with st.spinner('正在生成词云图...'):
                 generate_wordcloud(analysis_text)
+
+# 添加标注工具页面的处理逻辑
+elif page == '标注工具':
+    st.title('文本标注工具 🏷️')
+    
+    # 添加刷新按钮
+    refresh_button = st.button('刷新', type='primary')
+    if refresh_button:
+        st.session_state['示例文本'] = ""
+        annotation_text = ""
+
+    # 文本输入部分
+    if st.button('生成示例文本'):
+        st.session_state['示例文本'] = example_text
+        annotation_text = st.session_state['示例文本']
+    
+    if st.session_state.get('示例文本'):
+        st.write('生成的示例文本:')
+        st.text_area('示例文本', st.session_state['示例文本'], height=200)
+        annotation_text = st.session_state['示例文本']
+    else:
+        # 文件上传
+        uploaded_file = st.file_uploader("上传要标注的文件", type=['txt', 'csv'])
+        
+        if uploaded_file is not None:
+            annotation_text = uploaded_file.read().decode()
+        else:
+            annotation_text = st.text_area('或直接输入要标注的文本:', height=200)
+
+    if annotation_text:
+        # 调用标注功能
+        text_annotation(annotation_text)
