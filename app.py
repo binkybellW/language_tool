@@ -286,25 +286,8 @@ if page == '首页':
         </div>
         """, unsafe_allow_html=True)
 
-    # 添加图片 - 控制最大高度
-    st.markdown("""
-        <style>
-            [data-testid="stImage"] img {
-                max-height: 300px;  /* 控制图片最大高度 */
-                width: auto;
-                object-fit: contain;
-            }
-        </style>
-    """, unsafe_allow_html=True)
-    img = Image.open('static/LPT.png')
-    # 调整为横版，增加高度以保持质量
-    new_width = 1200
-    new_height = 500  # 增加高度
-    resized_img = img.resize((new_width, new_height), Image.Resampling.LANCZOS)  # 使用LANCZOS重采样以提高质量
-    
-    # 转换为numpy数组并显示
-    img_array = np.array(resized_img)
-    st.image(img_array, use_container_width=True)
+    # 直接显示原图
+    st.image('static/LPT.png')
     
     # 页脚信息
     st.markdown("""
