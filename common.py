@@ -199,22 +199,51 @@ def text_annotation(text, annotation_schema=None):
         st.warning('请先输入要标注的文本')
         return
     
+    # 文本预处理选项
+    st.write("### 文本预处理选项")
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        remove_punctuation = st.checkbox('去除标点符号', key='remove_punct_checkbox')
+    with col2:
+        remove_spaces = st.checkbox('去除多余空格', key='remove_space_checkbox')
+    with col3:
+        remove_numbers = st.checkbox('去除数字', key='remove_num_checkbox')
+    
+    # 文本预处理
+    processed_text = text
+    if remove_punctuation:
+        processed_text = re.sub(r'[^\w\s]', '', processed_text)
+    if remove_spaces:
+        processed_text = ' '.join(processed_text.split())
+    if remove_numbers:
+        processed_text = re.sub(r'\d+', '', processed_text)
+    
+    # 显示预处理后的文本
+    if remove_punctuation or remove_spaces or remove_numbers:
+        st.write("### 预处理后的文本")
+        st.text_area("预处理结果：", processed_text, height=100, key='processed_text_area')
+        if st.button("使用预处理后的文本", key='use_processed_text'):
+            text = processed_text
+    
     # 分句
     sentences = re.split(r'([。！？.!?])', text)
     sentences = [''.join(i) for i in zip(sentences[0::2], sentences[1::2] + [''])]
     sentences = [s.strip() for s in sentences if s.strip()]
     
     # 标注模式选择
+    st.write("### 标注设置")
     annotation_mode = st.radio(
         "选择标注模式：",
-        ["序列标注", "分类标注"]
+        ["序列标注", "分类标注"],
+        key="annotation_mode_radio"
     )
     
     if annotation_mode == "序列标注":
         # 自定义标签
         custom_labels = st.text_input(
             "输入自定义标签（用逗号分隔，如：人名,地名,组织）：",
-            value="人名,地名,组织"
+            value="人名,地名,组织",
+            key="custom_labels_input"
         ).split(',')
         
         # 初始化标注结果
