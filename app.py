@@ -12,6 +12,7 @@ import matplotlib.pyplot as plt
 import base64
 import tempfile
 import copy
+from PIL import Image
 
 from common import generate_wordcloud,count_word_frequency,count_characters,split_words,text_annotation
 
@@ -295,7 +296,15 @@ if page == '首页':
             }
         </style>
     """, unsafe_allow_html=True)
-    st.image('static/LPT.png', use_container_width=True)
+    img = Image.open('static/LPT.png')
+    # 调整为横版，例如 1200x300
+    new_width = 1200
+    new_height = 300
+    resized_img = img.resize((new_width, new_height))
+    
+    # 转换为numpy数组并显示
+    img_array = np.array(resized_img)
+    st.image(img_array, use_container_width=True)
     
     # 页脚信息
     st.markdown("""
