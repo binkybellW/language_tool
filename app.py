@@ -211,66 +211,76 @@ if page == '首页':
     </div>
     """, unsafe_allow_html=True)
 
-    # 使用自定义列宽布局
-    col1, mid, col2 = st.columns([3, 1, 3])  # 3:1:3 的比例，中间留空
-    
-    with col1:
-        st.markdown("""
-        <div class="feature-card">
-            <div class="feature-icon">📊</div>
-            <div class="feature-title">文本统计分析</div>
-            <div class="feature-description">
-                <ul>
-                    <li>• 词频统计与可视化</li>
-                    <li>• 字符统计分析</li>
-                    <li>• 词云图生成</li>
-                    <li>• 数据导出功能</li>
-                </ul>
-            </div>
-        </div>
+    # 使用容器来居中内容
+    container = st.container()
+    with container:
+        col1, col2 = st.columns([2, 2])  # 使用相等宽度的两列
         
-        <div class="feature-card">
-            <div class="feature-icon">🧹</div>
-            <div class="feature-title">文本预处理</div>
-            <div class="feature-description">
-                <ul>
-                    <li>• 去除标点符号</li>
-                    <li>• 去除停用词</li>
-                    <li>• 分词处理</li>
-                    <li>• 自定义处理选项</li>
-                </ul>
+        with col1:
+            st.markdown("""
+            <div style="display: flex; justify-content: center;">
+                <div class="feature-card" style="max-width: 300px;">
+                    <div class="feature-icon">📊</div>
+                    <div class="feature-title">文本统计分析</div>
+                    <div class="feature-description">
+                        <ul>
+                            <li>• 词频统计与可视化</li>
+                            <li>• 字符统计分析</li>
+                            <li>• 词云图生成</li>
+                            <li>• 数据导出功能</li>
+                        </ul>
+                    </div>
+                </div>
             </div>
-        </div>
-        """, unsafe_allow_html=True)
+            
+            <div style="display: flex; justify-content: center;">
+                <div class="feature-card" style="max-width: 300px;">
+                    <div class="feature-icon">🧹</div>
+                    <div class="feature-title">文本预处理</div>
+                    <div class="feature-description">
+                        <ul>
+                            <li>• 去除标点符号</li>
+                            <li>• 去除停用词</li>
+                            <li>• 分词处理</li>
+                            <li>• 自定义处理选项</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
 
-    with col2:
-        st.markdown("""
-        <div class="feature-card">
-            <div class="feature-icon">🎬</div>
-            <div class="feature-title">B站弹幕分析</div>
-            <div class="feature-description">
-                <ul>
-                    <li>• 弹幕数据提取</li>
-                    <li>• 情感倾向分析</li>
-                    <li>• 热点内容识别</li>
-                    <li>• 互动程度评估</li>
-                </ul>
+        with col2:
+            st.markdown("""
+            <div style="display: flex; justify-content: center;">
+                <div class="feature-card" style="max-width: 300px;">
+                    <div class="feature-icon">🎯</div>
+                    <div class="feature-title">B站弹幕分析</div>
+                    <div class="feature-description">
+                        <ul>
+                            <li>• 弹幕数据提取</li>
+                            <li>• 情感倾向分析</li>
+                            <li>• 热点内容识别</li>
+                            <li>• 互动程度评估</li>
+                        </ul>
+                    </div>
+                </div>
             </div>
-        </div>
-        
-        <div class="feature-card">
-            <div class="feature-icon">🏷️</div>
-            <div class="feature-title">文本标注工具</div>
-            <div class="feature-description">
-                <ul>
-                    <li>• 词语级标注</li>
-                    <li>• 句子级标注</li>
-                    <li>• 多种标注模式</li>
-                    <li>• 标注结果导出</li>
-                </ul>
+            
+            <div style="display: flex; justify-content: center;">
+                <div class="feature-card" style="max-width: 300px;">
+                    <div class="feature-icon">🏷️</div>
+                    <div class="feature-title">文本标注工具</div>
+                    <div class="feature-description">
+                        <ul>
+                            <li>• 词语级标注</li>
+                            <li>• 句子级标注</li>
+                            <li>• 多种标注模式</li>
+                            <li>• 标注结果导出</li>
+                        </ul>
+                    </div>
+                </div>
             </div>
-        </div>
-        """, unsafe_allow_html=True)
+            """, unsafe_allow_html=True)
 
     # 使用说明
     st.markdown("""
