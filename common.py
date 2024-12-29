@@ -203,7 +203,7 @@ def text_annotation(text, annotation_schema=None):
     st.write("### 文本预处理选项")
     col1, col2, col3 = st.columns(3)
     with col1:
-        remove_punctuation = st.checkbox('去除标点符号', key='annotation_remove_punct')
+        remove_punctuation = st.checkbox('去除标点符号（保留句号）', key='annotation_remove_punct')
     with col2:
         remove_spaces = st.checkbox('去除多余空格', key='annotation_remove_space')
     with col3:
@@ -212,8 +212,10 @@ def text_annotation(text, annotation_schema=None):
     # 文本预处理
     processed_text = text
     if remove_punctuation:
-        processed_text = re.sub(r'[^\w\s]', '', processed_text)
+        # 保留句号、感叹号、问号等分句标点
+        processed_text = re.sub(r'[^\w\s。！？!?.]', '', processed_text)
     if remove_spaces:
+        # 合并多个空格为单个空格
         processed_text = ' '.join(processed_text.split())
     if remove_numbers:
         processed_text = re.sub(r'\d+', '', processed_text)
@@ -225,10 +227,13 @@ def text_annotation(text, annotation_schema=None):
         if st.button("使用预处理后的文本", key='annotation_use_processed'):
             text = processed_text
     
-    # 分句
+    # 分句（保持原有的分句逻辑）
     sentences = re.split(r'([。！？.!?])', text)
     sentences = [''.join(i) for i in zip(sentences[0::2], sentences[1::2] + [''])]
     sentences = [s.strip() for s in sentences if s.strip()]
+    
+    # 显示分句结果
+    st.write(f"### 共分割出 {len(sentences)} 个句子")
     
     # 标注模式选择
     st.write("### 标注设置")
