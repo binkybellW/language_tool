@@ -484,7 +484,7 @@ def text_annotation(text):
                 st.session_state.annotations[i] = annotations
                 
         # 导出标注结果
-        if st.button('导出标注结果', key='annotation_export'):
+        if st.button('导出标注结果', key='word_level_annotation_export'):
             # 收集标注结果
             results = []
             total_words = 0
@@ -505,7 +505,7 @@ def text_annotation(text):
                             'label': label
                         })
                 
-                # 只记录标注数量
+                # 记录标注数量
                 sentence_labels[sent_id + 1] = sent_labeled
             
             # 创建已标注数据的DataFrame
@@ -523,14 +523,16 @@ def text_annotation(text):
                 
                 # 显示统计信息
                 st.info(f"""
-                📊 标注统计：
-                - 总句数：{len(sentences)}
-                - 总词数：{total_words}
-                - 已标注词数：{labeled_words}
-                - 标注率：{(labeled_words/total_words*100):.1f}%
+                📊 标注统计报告
+                ───────────────
+                总体统计：
+                • 句子总数：{len(sentences)}
+                • 词语总数：{total_words}
+                • 已标注词数：{labeled_words}
+                • 总体标注率：{(labeled_words/total_words*100):.1f}%
                 
-                各句标注数量：
-                {' '.join([f'句{i}: {n}个' for i, n in sentence_labels.items()])}
+                句子标注分布：
+                {chr(10).join([f'• 第{i:02d}句：{n:2d} 个标注' for i, n in sentence_labels.items()])}
                 """)
             else:
                 st.warning("没有已标注的数据可供导出")
