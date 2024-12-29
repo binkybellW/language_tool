@@ -538,6 +538,22 @@ def text_annotation(text):
             else:
                 st.warning("没有已标注的数据可供导出")
 
+        # 统计标注结果
+        if st.button('统计标注结果', key='annotation_stats'):
+            # 统计已标注的句子数
+            sentences_with_labels = 0
+            total_sentences = len(sentences)
+            
+            for sent_id, annotations in st.session_state.annotations.items():
+                # 如果句子中有任何标注就计数
+                if any(label != "无标注" for _, label in annotations):
+                    sentences_with_labels += 1
+            
+            # 显示标注率
+            st.write("### 标注统计")
+            st.write(f"已标注句子数：{sentences_with_labels}/{total_sentences}")
+            st.write(f"标注率：{(sentences_with_labels/total_sentences*100):.1f}%")
+
     else:  # 句子级标注
         # 自定义类别
         st.write("设置句子标注的类别，例如：积极、消极、中性等")
