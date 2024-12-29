@@ -494,12 +494,13 @@ def text_annotation(text):
                     if label != "无标注":
                         labeled_words += 1
             
-            st.write("### 标注统计")
-            st.write("**1. 总体情况**")
-            st.write(f"- 文本共分为 {len(sentences)} 个句子")
-            st.write(f"- 共有 {total_words} 个词语")
-            st.write(f"- 已标注 {labeled_words} 个词语")
-            st.write(f"- 标注率：{(labeled_words/total_words*100):.1f}%")
+            st.info(f"""
+            📊 标注统计：
+                - 总句数：{len(sentences)}
+                - 总词数：{total_words}
+                - 已标注词数：{labeled_words}
+                - 标注率：{(labeled_words/total_words*100):.1f}%
+            """)
 
     else:  # 句子级标注
         # 自定义类别
