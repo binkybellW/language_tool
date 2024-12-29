@@ -107,8 +107,12 @@ st.sidebar.markdown('Made with ❤️ by Shan')
 if page == '首页':
     st.markdown("""
     <style>
+    /* 调整标题上方空白 */
+    .block-container {
+        padding-top: 2rem !important;  /* 减少顶部空白 */
+    }
     .stApp {
-        background-color: #ffffff;  /* 改为白色背景 */
+        background-color: #ffffff;
     }
     .big-font {
         font-size: 2.8em !important;
