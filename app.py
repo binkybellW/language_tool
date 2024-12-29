@@ -615,23 +615,25 @@ elif page == '词频统计与词云图':
     
 
     if analysis_text:
-
         # 分析选项
         analysis_type = st.multiselect(
             '选择分析类型',
             ['词频统计', '字符统计', '词云图']
         )
         
+        # 添加调试信息
+        st.write("已选择的分析类型:", analysis_type)  # 临时添加，帮助调试
+        
         if '词频统计' in analysis_type:
             st.subheader('📊 词频统计分析')
-            
             with st.spinner('正在进行词频统计...'):
                 count_word_frequency(analysis_text)
-        if '字符计' in analysis_type:
+                
+        if '字符统计' in analysis_type:
             st.subheader('📝 字符统计分析')
             with st.spinner('正在进行字符统计...'):
                 count_characters(analysis_text)
-
+                st.write("字符统计完成")  # 临时添加，帮助调试
         
         if '词云图' in analysis_type:
             st.subheader('☁️ 词云图生成')
