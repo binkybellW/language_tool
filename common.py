@@ -239,22 +239,40 @@ def text_annotation(text, annotation_schema=None):
     sentences = [''.join(i) for i in zip(sentences[0::2], sentences[1::2] + [''])]
     sentences = [s.strip() for s in sentences if s.strip()]
     
-    # 显示分句结果
-    st.write(f"### 共分割出 {len(sentences)} 个句子")
+    # 使用info显示分句结果
+    st.info(f"✂️ 文本已被分割为 {len(sentences)} 个句子")
+    
+    # 使用明显的分隔线和样式突出标注模式选择
+    st.markdown("---")
+    st.markdown("""
+    <style>
+    .annotation-header {
+        font-size: 1.5em;
+        font-weight: bold;
+        color: #FF4B4B;
+        padding: 10px 0;
+        margin: 20px 0;
+    }
+    </style>
+    <div class="annotation-header">📝 选择标注模式</div>
+    """, unsafe_allow_html=True)
     
     # 标注模式选择
-    st.write("### 标注设置")
     annotation_mode = st.radio(
-        "选择标注模式：",
+        "",  # 移除标签文字，因为已经用上面的标题替代
         ["词语级标注（标注每个词的类别）", "句子级标注（标注整句的类别）"],
         key="annotation_mode_select"
     )
     
+    st.markdown("---")  # 添加分隔线
+    
     if annotation_mode == "词语级标注（标注每个词的类别）":
         # 标注类型选择
+        st.markdown('<div style="font-size: 1.2em; font-weight: bold; color: #333;">选择标注类型：</div>', 
+                   unsafe_allow_html=True)
         label_type = st.radio(
-            "选择标注类型：",
-            ["命名实体", "词性", "语义角色"],
+            "",  # 移除标签文字
+            ["命名实体", "词性", "语义角色", "自定义标注"],
             key="label_type_select"
         )
         
@@ -265,9 +283,20 @@ def text_annotation(text, annotation_schema=None):
         elif label_type == "词性":
             default_labels = "名词,动词,形容词,副词,代词,介词,连词,助词,叹词,数词,量词,其他"
             help_text = "用于标注词语的词性类别"
-        else:  # 语义角色
+        elif label_type == "语义角色":
             default_labels = "施事,受事,与事,工具,处所,时间,方式,原因,目的,结果,其他"
             help_text = "用于标注词语在句子中的语义角色"
+        else:  # 自定义标注
+            default_labels = "标签1,标签2,标签3"
+            help_text = "请输入您自定义的标注类别，用逗号分隔"
+            
+            # 自定义标注名称
+            custom_annotation_name = st.text_input(
+                "输入标注任务名称（例如：情感倾向、主题分类等）：",
+                value="自定义标注任务",
+                key="custom_annotation_name"
+            )
+            st.write(f"当前标注任务：{custom_annotation_name}")
         
         # 自定义标签
         st.write(f"设置{label_type}标注的类别")
@@ -304,7 +333,7 @@ def text_annotation(text, annotation_schema=None):
                 - 量词：表示单位
                 - 其他：其他词性
                 """)
-            else:  # 语义角色
+            elif label_type == "语义角色":
                 st.markdown("""
                 - 施事：动作的执行者
                 - 受事：动作的承受者
@@ -318,6 +347,26 @@ def text_annotation(text, annotation_schema=None):
                 - 结果：动作的结果
                 - 其他：其他语义角色
                 """)
+            else:  # 自定义标注说明
+                st.markdown("""
+                ### 自定义标注说明
+                1. 在上方输入您的标注任务名称
+                2. 在标注类别中输入您需要的标签，用逗号分隔
+                3. 建议添加"其他"类别以处理特殊情况
+                4. 标签名称建议简洁明确
+                5. 可以在下方添加您的标注规则说明
+                """)
+                
+                # 允许用户添加自定义说明
+                custom_guidelines = st.text_area(
+                    "添加您的标注规则说明（可选）：",
+                    value="",
+                    height=100,
+                    key="custom_guidelines"
+                )
+                if custom_guidelines:
+                    st.markdown("### 自定义标注规则")
+                    st.markdown(custom_guidelines)
         
         # 初始化标注结果
         if 'annotations' not in st.session_state:
