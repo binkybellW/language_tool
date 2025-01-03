@@ -6,6 +6,7 @@ from wordcloud import WordCloud
 import matplotlib.pyplot as plt
 import io
 import pandas as pd
+from pypinyin import pinyin, Style
 
 def generate_wordcloud(analysis_text):
     remove_stop_words = st.checkbox('去除停用词', value=False, key='remove_stop_words_checkbox')
@@ -605,3 +606,38 @@ def export_danmu_analysis(df, video_title):
         
     except Exception as e:
         st.error(f"导出文件时发生错误: {str(e)}")
+
+def convert_to_pinyin(text, with_tone=True, with_chinese=True):
+    """
+    将汉字转换为拼音
+    
+    Args:
+        text: 要转换的文本
+        with_tone: 是否包含声调
+        with_chinese: 是否显示原中文字符
+    
+    Returns:
+        转换后的文本
+    """
+    try:
+        # 选择拼音风格
+        style = Style.TONE if with_tone else Style.NORMAL
+        
+        # 获取拼音列表
+        pinyins = pinyin(text, style=style)
+        
+        # 构建结果
+        result = []
+        for i, py in enumerate(pinyins):
+            pinyin_text = py[0]
+            chinese_char = text[i]
+            
+            if with_chinese:
+                result.append(f"{chinese_char}({pinyin_text})")
+            else:
+                result.append(pinyin_text)
+                
+        return ' '.join(result)
+        
+    except Exception as e:
+        return f"转换失败: {str(e)}"
