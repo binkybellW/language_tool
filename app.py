@@ -14,7 +14,7 @@ import tempfile
 import copy
 from PIL import Image
 
-from common import generate_wordcloud, count_word_frequency, count_characters, split_words, text_annotation, convert_to_pinyin
+from language_tool.common import generate_wordcloud, count_word_frequency, count_characters, split_words, text_annotation, convert_to_pinyin
 
 
 example_text="人工智能（Artificial Intelligence, AI）是计算机科学的一个分支，旨在创建能够像人类一样思考和学习的智能机器。AI技术包括机器学习（Machine Learning）、自然语言处理（Natural Language Processing）和计算机视觉（Computer Vision）等。随着科技的进步，AI在各个领域的应用越来越广泛，例如自动驾驶（Autonomous Driving）、医疗诊断（Medical Diagnosis）和智能客服（Intelligent Customer Service）等。AI的快速发展不仅改变了我们的生活方式，也引发了关于伦理和隐私的广泛讨论。未来，AI有望在教育、金融、制造业等更多领域发挥重要作用，推动社会的进一步发展。AI的潜力是无限的，它不仅可以提高生产效率，还可以通过分析大量数据来提供更好的决策支持。随着AI算法的不断优化和计算能力的提升，我们可以期待AI在解决复杂问题和创新方面带来更多突破。"
